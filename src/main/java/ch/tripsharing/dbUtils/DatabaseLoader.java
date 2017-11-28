@@ -94,7 +94,7 @@ public class DatabaseLoader implements ApplicationRunner{
 		tripArr[2].addPhoto("http://assets.nydailynews.com/polopoly_fs/1.16108.1313673232!/img/httpImage/image.jpg_gen/derivatives/gallery_1200/gal-brazil-carnival-13-jpg.jpg");
 		
 		for (Trip trip: tripArr) {
-			if (0 == tripRepository.findByTitle(trip.getTitle()).size()) {
+			if (0 == tripRepository.findByName(trip.getName()).size()) {
 				tripRepository.save(trip);
 				trip.getHost().addTripHosted(trip);
 			}

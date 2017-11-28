@@ -10,8 +10,8 @@ import ch.tripsharing.domain.User;
 public interface TripRepository extends JpaRepository<Trip, String>{
 
 	Trip findById(String id);
-	List<Trip> findByTitle(String title);
-	List<Trip> findByPlaces(String place);
-	Trip findByHost(String userId);
+	List<Trip> findByName(String name);
+//	List<Trip> findByPlaces(String place);
+	Trip findByHost(User user);
 	void deleteById(String id);
 }

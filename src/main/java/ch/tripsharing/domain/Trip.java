@@ -35,7 +35,7 @@ public class Trip {
 	
 	@Column( nullable = false, length = 50, unique = true)
 	@JsonView( JsonViews.Summary.class )
-	private String title;
+	private String name;
 	
 	@Column( length = 1000 )
 	@JsonView( JsonViews.Summary.class )
@@ -43,6 +43,7 @@ public class Trip {
 	
 	@JsonView( JsonViews.Summary.class )
 	@ManyToOne 
+//	@ElementCollection( targetClass = User.class )
 	private User host;
 	
 	@Column( name = "start_date", length = 20 )
@@ -65,9 +66,10 @@ public class Trip {
 	@ManyToMany
 	private List<User> participants = new ArrayList<>();
 	
+	@Column
 	private String transportation;
 	
-	private Integer cost;
+//	private Integer cost;
 	
 	@PrePersist
 	public void onCreate() {
@@ -76,7 +78,7 @@ public class Trip {
 	}
 
 	public Trip(String title, String description, User organizer, String startDate, String endDate) {
-		this.title = title;
+		this.name = title;
 		this.description = description;
 		this.host = organizer;
 		this.startDate = startDate;

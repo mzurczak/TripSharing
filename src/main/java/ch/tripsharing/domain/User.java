@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -30,7 +31,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import ch.tripsharing.repository.RoleRepository;
-import ch.tripsharing.repository.TripRepository;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -53,7 +53,7 @@ public class User implements UserDetails {
 	private static RoleRepository roleRepository;
 	
 	@Autowired
-	public void setRoleRepository(RoleRepository roleRepository, TripRepository tripRepository) {
+	public void setRoleRepository(RoleRepository roleRepository) {
 		User.roleRepository = roleRepository;
 	}
 	
@@ -82,19 +82,19 @@ public class User implements UserDetails {
 	private String password;
 	
 	@JsonView( JsonViews.ReviewListInUser.class )
-	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-	private List<Review> reviews = new ArrayList<>();
+	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	private List<Review> reviewsReceived = new ArrayList<>();
 	
-	@JsonView( JsonViews.ReviewListInUser.class )
-	@OneToMany( mappedBy = "host", cascade = CascadeType.ALL)
+	@JsonView( JsonViews.Summary.class )
+	@OneToMany( mappedBy = "host", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@ElementCollection(targetClass=Trip.class)
-	private Set<Trip> tripsHosted = new HashSet<>();
+	private Collection<Trip> tripsHosted = new LinkedHashSet<>();
 	
 	@JsonView( JsonViews.Summary.class )
 	@ElementCollection(targetClass=Trip.class)
 	private Set<Trip> tripsAttended = new HashSet<>();
 	
-	@ManyToMany( fetch = FetchType.EAGER )
+	@ManyToMany( fetch = FetchType.LAZY )
 	@JoinTable( name = "user_roles" )
 	private Set<Role> roles = new HashSet<>();
 
@@ -112,35 +112,35 @@ public class User implements UserDetails {
 		this(null, username, firstName, lastName, email, password);
 	}
 	
-	public void addReview(Review review) {
-		this.reviews.add(review);
+	public void addReviewReceived(Review review) {
+		this.reviewsReceived.add(review);
 	}
 	
-	public void addRole(Role role) {
-		this.roles.add(role);
+	public void removeReviewReceived(Review review) {
+		int index = this.reviewsReceived.indexOf(review);
+		if ( index != -1 ) {
+			this.reviewsReceived.remove(index);			
+		}
 	}
 	
 	public void addTripHosted(Trip trip) {
 		this.tripsHosted.add(trip);
-	}
-	
-	public void addTripAttended(Trip trip) {
-		this.tripsAttended.add(trip);
 	}
 
 	public void removeTripHosted(Trip trip) {
 		this.tripsHosted.add(trip);
 	}
 	
+	public void addTripAttended(Trip trip) {
+		this.tripsAttended.add(trip);
+	}
+	
 	public void removeTripAttended(Trip trip) {
 		this.tripsAttended.add(trip);
 	}
 	
-	public void removeReview(Review review) {
-		int index = this.reviews.indexOf(review);
-		if ( index != -1 ) {
-			this.reviews.remove(index);			
-		}
+	public void addRole(Role role) {
+		this.roles.add(role);
 	}
 	
 	public void removeRole(Role role) {
