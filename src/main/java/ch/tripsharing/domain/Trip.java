@@ -77,12 +77,16 @@ public class Trip {
 		setId(uuid);
 	}
 
-	public Trip(String title, String description, User organizer, String startDate, String endDate) {
+	public Trip(String id, String title, String description, User organizer, String startDate, String endDate) {
 		this.name = title;
 		this.description = description;
 		this.host = organizer;
 		this.startDate = startDate;
 		this.endDate = endDate;
+	}
+	
+	public Trip(String title, String description, User organizer, String startDate, String endDate) {
+		this(null, title, description, organizer, startDate, endDate);
 	}
 	
 	public void addPlace(String place) {

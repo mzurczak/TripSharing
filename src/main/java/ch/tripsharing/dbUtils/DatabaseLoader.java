@@ -45,7 +45,7 @@ public class DatabaseLoader implements ApplicationRunner{
 		
 		
 		User[] userArr = new User[11];
-		userArr[0] = new User("mzurczak", "Michal", "Michal", "michal@mail.com", "zurczak");
+		userArr[0] = new User("mzurczak", "Michal", "Zurczak", "michal@mail.com", "zurczak");
 		userArr[0].addRole(ROLE_ADMIN);
 		userArr[1] = new User("llebovitz", "Lukas", "Lebovitz", "lukas@mail.com", "lebovitz");
 		userArr[2] = new User("jsavor", "Jeremy", "Savor", "jeremy@mail.com", "savor");

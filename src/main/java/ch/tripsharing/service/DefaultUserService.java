@@ -17,19 +17,19 @@ public class DefaultUserService implements UserService{
 
 	private final UserRepository userRepository;
 	private final ReviewService reviewService;
-//	private final BCryptPasswordEncoder bcrypt;
+	private final BCryptPasswordEncoder bcrypt;
 	
 	@Autowired
-	public DefaultUserService(UserRepository userRepository, ReviewService reviewService) {
+	public DefaultUserService(UserRepository userRepository, ReviewService reviewService, BCryptPasswordEncoder bcrypt) {
 		this.userRepository = userRepository;
 		this.reviewService = reviewService;
-//		this.bcrypt = bcrypt;
+		this.bcrypt = bcrypt;
 	}
 	
 	@Override
 	public User save(User user) {
-//		String password = user.getPassword();
-//		user.setPassword(bcrypt.encode(password));
+		String password = user.getPassword();
+		user.setPassword(bcrypt.encode(password));
 		return this.userRepository.save(user);
 	}
 
