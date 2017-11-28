@@ -2,12 +2,16 @@ package ch.tripsharing.repository;
 
 import java.util.List;
 
-import ch.tripsharing.domain.Trip;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TripRepository {
+import ch.tripsharing.domain.Trip;
+import ch.tripsharing.domain.User;
+
+public interface TripRepository extends JpaRepository<Trip, String>{
 
 	Trip findById(String id);
 	List<Trip> findByTitle(String title);
-	List<Trip> findByPlace(String place);
+	List<Trip> findByPlaces(String place);
+	Trip findByHost(String userId);
 	void deleteById(String id);
 }

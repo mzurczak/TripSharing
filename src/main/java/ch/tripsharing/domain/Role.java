@@ -1,5 +1,6 @@
 package ch.tripsharing.domain;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -17,8 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Data
-public class Role {
+public class Role implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	public static final String ROLE_USER = "ROLE_USER";
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 

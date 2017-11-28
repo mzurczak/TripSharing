@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -39,25 +41,29 @@ public class Trip {
 	@JsonView( JsonViews.Summary.class )
 	private String description;
 	
-	@Column( name = "start_date", length = 20)
+	@JsonView( JsonViews.Summary.class )
+	@ManyToOne 
+	private User host;
+	
+	@Column( name = "start_date", length = 20 )
 	@JsonView( JsonViews.Summary.class )
 	private String startDate;
 	
-	@Column( name = "end_date", length = 20)
+	@Column( name = "end_date", length = 20 )
 	@JsonView( JsonViews.Summary.class )
 	private String endDate;
 	
 	@JsonView( JsonViews.Summary.class )
 	private String photo;
 	
-	@Column
+	@Column ( name = "places" )
 	@JsonView( JsonViews.Summary.class )
+	@ElementCollection( targetClass = String.class )
 	private List<String> places = new ArrayList<>();
 	
 	@JsonView( JsonViews.UserListInTrip.class )
 	@ManyToMany
 	private List<User> participants = new ArrayList<>();
-	
 	
 	private String transportation;
 	
@@ -69,16 +75,54 @@ public class Trip {
 		setId(uuid);
 	}
 
-	public Trip(String title, String description, String startDate, String endDate, List<String> places) {
+	public Trip(String title, String description, User organizer, String startDate, String endDate) {
 		this.title = title;
 		this.description = description;
+		this.host = organizer;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.places = places;
 	}
 	
+	public void addPlace(String place) {
+		int index = this.places.indexOf(place);
+		if ( index != -1 ) {
+			this.places.add(place);
+		}
+	}
 	
+	public void removePlace(String place) {
+		this.places.remove(place);
+	}
 	
+	public void addParticipant(User user) {
+		int index = this.participants.indexOf(user);
+		if ( index != -1 ) {
+			this.participants.add(user);
+		}
+	}
+	
+	public void removeParticipant(User user) {
+		int index = this.participants.indexOf(user);
+		if ( index != -1 ) {
+			this.participants.remove(index);			
+		}
+	}
+	
+	public void addPhoto(String url) {
+		this.photo = url;
+	}
+	
+	public void removePhoto() {
+		this.photo = "";
+	}
+	
+	public void addTransportation(String transportation) {
+		this.transportation = transportation;
+	}
+
+	public void removeTransportation() {
+		this.transportation = "";
+	}
 	
 
 }

@@ -1,13 +1,17 @@
 package ch.tripsharing.domain;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -18,11 +22,15 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 import ch.tripsharing.repository.RoleRepository;
+import ch.tripsharing.repository.TripRepository;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,14 +45,15 @@ import lombok.ToString;
 @ToString( exclude = { "password"} )
 @Data
 @Component
-public class User {
+public class User implements UserDetails {
 
-//	private static final long serialVersionUID = 2365563617740595474L;
 	
+	private static final long serialVersionUID = 2107258274129956352L;
+
 	private static RoleRepository roleRepository;
 	
 	@Autowired
-	public void setRoleRepository(RoleRepository roleRepository) {
+	public void setRoleRepository(RoleRepository roleRepository, TripRepository tripRepository) {
 		User.roleRepository = roleRepository;
 	}
 	
@@ -76,6 +85,15 @@ public class User {
 	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	private List<Review> reviews = new ArrayList<>();
 	
+	@JsonView( JsonViews.ReviewListInUser.class )
+	@OneToMany( mappedBy = "host", cascade = CascadeType.ALL)
+	@ElementCollection(targetClass=Trip.class)
+	private Set<Trip> tripsHosted = new HashSet<>();
+	
+	@JsonView( JsonViews.Summary.class )
+	@ElementCollection(targetClass=Trip.class)
+	private Set<Trip> tripsAttended = new HashSet<>();
+	
 	@ManyToMany( fetch = FetchType.EAGER )
 	@JoinTable( name = "user_roles" )
 	private Set<Role> roles = new HashSet<>();
@@ -102,6 +120,22 @@ public class User {
 		this.roles.add(role);
 	}
 	
+	public void addTripHosted(Trip trip) {
+		this.tripsHosted.add(trip);
+	}
+	
+	public void addTripAttended(Trip trip) {
+		this.tripsAttended.add(trip);
+	}
+
+	public void removeTripHosted(Trip trip) {
+		this.tripsHosted.add(trip);
+	}
+	
+	public void removeTripAttended(Trip trip) {
+		this.tripsAttended.add(trip);
+	}
+	
 	public void removeReview(Review review) {
 		int index = this.reviews.indexOf(review);
 		if ( index != -1 ) {
@@ -117,6 +151,38 @@ public class User {
 	public void onCreate() {
 		String uuid = UUID.randomUUID().toString();
 		setId(uuid);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (getRoles() == null) {
+			return Collections.emptySet();
+		}
+		return getRoles().stream()
+				.map(Role::getName)
+				.map(String::toUpperCase)
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toSet());
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return isEnabled();
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return isEnabled();
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return isEnabled();
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 	
 }
