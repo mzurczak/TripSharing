@@ -1,5 +1,6 @@
 package ch.tripsharing.web;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,9 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import ch.tripsharing.domain.JsonViews;
+import ch.tripsharing.domain.Review;
 import ch.tripsharing.domain.User;
 import ch.tripsharing.security.JwtUtil;
 import ch.tripsharing.security.service.JwtAuthenticationResponse;
+import ch.tripsharing.service.ReviewService;
 import ch.tripsharing.service.UserService;
 
 @RestController
@@ -38,13 +41,15 @@ public class RestUserController {
 
 	private final String tokenHeader = "Authorization";
 	private final UserService userService;
+	private final ReviewService reviewService;
 	private final UserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
     
     @Autowired
-	public RestUserController(UserService userService, UserDetailsService userDetailsService, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
+	public RestUserController(UserService userService, ReviewService reviewService, UserDetailsService userDetailsService, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
 		this.userService = userService;
+		this.reviewService = reviewService;
 		this.userDetailsService = userDetailsService;
 		this.jwtUtil = jwtUtil;
 		this.authenticationManager = authenticationManager;
@@ -102,9 +107,15 @@ public class RestUserController {
 	}
 	
 	@GetMapping( "/{id}" )
-	@JsonView( JsonViews.ReviewListInUser.class )
-	public User getUser(@PathVariable String id) {
-		return this.userService.findById(id);
+	@JsonView( JsonViews.TripListInUser.class )
+	public User getUser(@PathVariable String id, HttpServletRequest request) {
+		String token = request.getHeader(tokenHeader).substring(7);
+		String username = jwtUtil.getUsernameFromToken(token);
+		String userId = this.userService.findByUserName(username).getId();
+		if (isAuthenticated(request, userId)) {
+			return this.userService.findById(id);
+		}
+		return null;
 	}
 	
 	@DeleteMapping( "/{id}" )
@@ -130,4 +141,50 @@ public class RestUserController {
 		} 
 		return null;
 	}
+	
+	@PostMapping( "/{userId}/reviews/new" )
+	@JsonView( JsonViews.ReviewListInUser.class )
+	public Review addReview(@PathVariable String userId, HttpServletRequest request, @RequestBody Map<String, String> json) {
+		String token = request.getHeader(tokenHeader).substring(7);
+		String authorUserName = jwtUtil.getUsernameFromToken(token);
+		User author = this.userService.findByUserName(authorUserName);
+		String text = json.get("text");
+		Integer rating =  Integer.valueOf(json.get("rating"));
+		User user = this.userService.findById(userId);
+		
+		Review review = new Review(author, text, rating, user);
+		if (isAuthenticated(request, author.getId())) {
+			return this.reviewService.saveReview(review);
+		}
+		
+		return null;
+	}
+	
+	@DeleteMapping( "/{userId}/reviews/{reviewId}" )
+	@JsonView( JsonViews.ReviewListInUser.class)
+	public void deleteReview(@PathVariable String userId, @PathVariable String reviewId, HttpServletRequest request) {
+		User author = this.reviewService.findByID(reviewId).getAuthor();
+		if (isAuthenticated(request, author.getId())) {
+			this.reviewService.deleteById(reviewId);
+		}
+	}
+	
+	@PutMapping( "/{userId}/reviews/{reviewId}" )
+	@JsonView( JsonViews.ReviewListInUser.class )
+	public Review updateReview(@PathVariable String userId, @PathVariable String reviewId, HttpServletRequest request, @RequestBody Map<String, String> json) {
+		String token = request.getHeader(tokenHeader).substring(7);
+		String authorName = jwtUtil.getUsernameFromToken(token);
+		User author = this.userService.findByUserName(authorName);
+		String text = json.get("text");
+		Integer rating = Integer.valueOf(json.get("rating"));
+		User user = this.userService.findById(userId);
+		LocalDateTime dateCreated = LocalDateTime.now();
+		Review updatedReview = new Review(reviewId, author, text, rating, user, dateCreated);
+		
+		if (isAuthenticated(request, author.getId())) {
+			return this.reviewService.updateReview(updatedReview);
+		}
+		return null;
+	}
+	
 }

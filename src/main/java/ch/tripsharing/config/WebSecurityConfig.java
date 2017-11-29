@@ -75,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 	        
 	        // don't create session
-           // .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             
             .mvcMatcher("/**")
 	            .authorizeRequests()
@@ -86,6 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 					.mvcMatchers(HttpMethod.POST, "/api/users/sign_in").permitAll()
 					.mvcMatchers(HttpMethod.POST, "/api/users/sign_up").permitAll()
+					.mvcMatchers(HttpMethod.POST, "/api/users/**/reviews/**").hasRole("USER")
 					.mvcMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")//hasRole("USER")
 					.mvcMatchers("/api/users/**").hasRole("USER")
 					.and()
@@ -95,21 +96,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.mvcMatchers(HttpMethod.GET,  "/api/review/**").hasRole("USER")
 					.and()
 
-//			.mvcMatcher("/api/restaurants/**")
-//				.authorizeRequests()
-//					.mvcMatchers(HttpMethod.GET, "/api/restaurants").permitAll()
-//					.mvcMatchers(HttpMethod.GET, "/api/restaurants/**").permitAll()
-//					.and()
-//			
-//			.mvcMatcher("/api/restaurant/**")
-//				.authorizeRequests()
-//					.mvcMatchers(HttpMethod.POST, "/api/restaurant/*/review").hasRole("USER")
-//					.mvcMatchers(HttpMethod.PUT, "/api/restaurant/*/review/*").hasRole("USER")
-//					.mvcMatchers(HttpMethod.DELETE, "/api/restaurant/*/review/*").hasRole("USER")
-//					.mvcMatchers(HttpMethod.POST, "/api/restaurant").hasRole("ADMIN")
-//					.mvcMatchers(HttpMethod.PUT, "/api/restaurant/*").hasRole("ADMIN")
-//					.mvcMatchers(HttpMethod.DELETE, "/api/restaurant/*").hasRole("ADMIN")
-//					.and()
+			.mvcMatcher("/api/trips/**")
+				.authorizeRequests()
+					.mvcMatchers(HttpMethod.GET, "/api/trips").permitAll()
+					.mvcMatchers(HttpMethod.GET, "/api/trips/**").permitAll()
+					.and()
+			
+			.mvcMatcher("/api/restaurant/**")
+				.authorizeRequests()
+					.mvcMatchers(HttpMethod.POST, "/api/trips/create").hasRole("USER")
+					.mvcMatchers(HttpMethod.PUT, "/api/trips/**").hasRole("USER")
+					.and()
 
 			.authorizeRequests()
 			.antMatchers(
