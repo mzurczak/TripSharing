@@ -37,16 +37,15 @@ public class Trip {
 	@JsonView( JsonViews.Summary.class )
 	private String name;
 	
-	@Column( length = 1000 )
+	@Column( nullable = false, length = 1000 )
 	@JsonView( JsonViews.Summary.class )
 	private String description;
 	
-	@JsonView( JsonViews.Summary.class )
+	@JsonView( JsonViews.TripDetails.class )
 	@ManyToOne 
-//	@ElementCollection( targetClass = User.class )
 	private User host;
 	
-	@Column( name = "start_date", length = 20 )
+	@Column( name = "start_date", length = 20, nullable = false )
 	@JsonView( JsonViews.Summary.class )
 	private String startDate;
 	
@@ -62,7 +61,7 @@ public class Trip {
 	@ElementCollection( targetClass = String.class )
 	private List<String> places = new ArrayList<>();
 	
-	@JsonView( JsonViews.UserListInTrip.class )
+	@JsonView( JsonViews.TripDetails.class )
 	@ManyToMany
 	private List<User> participants = new ArrayList<>();
 	
@@ -78,6 +77,7 @@ public class Trip {
 	}
 
 	public Trip(String id, String title, String description, User organizer, String startDate, String endDate) {
+		this.id = id;
 		this.name = title;
 		this.description = description;
 		this.host = organizer;

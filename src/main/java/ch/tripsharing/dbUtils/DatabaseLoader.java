@@ -12,20 +12,20 @@ import ch.tripsharing.domain.User;
 import ch.tripsharing.repository.ReviewRepository;
 import ch.tripsharing.repository.RoleRepository;
 import ch.tripsharing.repository.TripRepository;
-import ch.tripsharing.repository.UserRepository;
+import ch.tripsharing.service.UserService;
 
 @Component
 public class DatabaseLoader implements ApplicationRunner{
 
-	private UserRepository userRepository;
+	private UserService userService;
 	private TripRepository tripRepository;
 	private ReviewRepository reviewRepository;
 	private RoleRepository roleRepository;
 	
 	@Autowired
-	public DatabaseLoader(UserRepository userRepository, TripRepository tripRepository,
+	public DatabaseLoader(UserService userService, TripRepository tripRepository,
 			ReviewRepository reviewRepository, RoleRepository roleRepository) {
-		this.userRepository = userRepository;
+		this.userService = userService;
 		this.tripRepository = tripRepository;
 		this.reviewRepository = reviewRepository;
 		this.roleRepository = roleRepository;
@@ -59,15 +59,15 @@ public class DatabaseLoader implements ApplicationRunner{
 		userArr[10] = new User("lhoxhaj", "Laurent", "Hoxhaj", "laurent@mail.com", "hoxhaj");
 		
 		for( User user: userArr) {
-			if (null == userRepository.findByUsername(user.getUsername())) {
-				userRepository.save(user);
+			if (null == userService.findByUserName(user.getUsername())) {
+				userService.save(user);
 			}
 		}
 		
 		Trip[] tripArr = new Trip[3];
 		tripArr[0] = new Trip("Octoberfest adventure!", 
 				"Let's have fun on the most popular beer fest!",
-				userRepository.findByUsername("ppintaske"),
+				userService.findByUserName("ppintaske"),
 				"2018-10-01", 
 				"2018-10-03" 
 				);
@@ -77,7 +77,7 @@ public class DatabaseLoader implements ApplicationRunner{
 		
 		tripArr[1] = new Trip("Carnaval in Rio!", 
 				"Experience the best carnaval in the whole world!",
-				userRepository.findByUsername("gperdomo"),
+				userService.findByUserName("gperdomo"),
 				"2018-02-09", 
 				"2018-02-14"
 				);
@@ -86,7 +86,7 @@ public class DatabaseLoader implements ApplicationRunner{
 		
 		tripArr[2] = new Trip("Explore New York", 
 				"We are looking for the people, that are dreaming of visiting the greatest city in the world!",
-				userRepository.findByUsername("ppintaske"),
+				userService.findByUserName("ppintaske"),
 				"2019-04-03", 
 				"2019-04-03" 
 				);
@@ -102,15 +102,15 @@ public class DatabaseLoader implements ApplicationRunner{
 		
 		Review[] reviewsArr = new Review[2];
 		reviewsArr[0] = new Review(
-				userRepository.findByUsername("ppintaske").getId(),
+				userService.findByUserName("ppintaske"),
 				"This dude is crazy! So many great memories! Looking forward to next trips together!",
 				5,
-				userRepository.findByUsername("jsavor"));
+				userService.findByUserName("jsavor"));
 		reviewsArr[1] = new Review(
-				userRepository.findByUsername("jmuhlebach").getId(),
+				userService.findByUserName("jmuhlebach"),
 				"You will never be bored with her! Jokes, jokes everywhere!",
 				5,
-				userRepository.findByUsername("jsavina"));	
+				userService.findByUserName("jsavina"));	
 		
 		for ( Review review : reviewsArr ) {
 			if ( null == reviewRepository.findById(review.getId())) {

@@ -81,20 +81,24 @@ public class User implements UserDetails {
 	@Column( nullable = false, length = 100 )
 	private String password;
 	
-	@JsonView( JsonViews.ReviewListInUser.class )
+	@JsonView( JsonViews.Summary.class )
 	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private List<Review> reviewsReceived = new ArrayList<>();
+
+	@JsonView( JsonViews.ReviewListInUser.class )
+	@OneToMany( mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	private List<Review> reviewsGiven = new ArrayList<>();
 	
-	@JsonView( JsonViews.Summary.class )
+	@JsonView( JsonViews.TripListInUser.class )
 	@OneToMany( mappedBy = "host", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@ElementCollection(targetClass=Trip.class)
 	private Collection<Trip> tripsHosted = new LinkedHashSet<>();
 	
-	@JsonView( JsonViews.Summary.class )
+	@JsonView( JsonViews.TripListInUser.class )
 	@ElementCollection(targetClass=Trip.class)
 	private Set<Trip> tripsAttended = new HashSet<>();
 	
-	@ManyToMany( fetch = FetchType.LAZY )
+	@ManyToMany( fetch = FetchType.EAGER )
 	@JoinTable( name = "user_roles" )
 	private Set<Role> roles = new HashSet<>();
 

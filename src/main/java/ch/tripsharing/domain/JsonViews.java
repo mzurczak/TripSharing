@@ -11,11 +11,11 @@ public interface JsonViews {
 		
 	}
 	
-	interface ReviewListInTrip extends Summary {
+	interface TripListInUser extends Summary {
 		
 	}
 	
-	interface UserListInTrip extends Summary {
+	interface TripDetails extends Summary {
 		
 	}
 	

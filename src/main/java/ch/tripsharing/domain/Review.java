@@ -35,8 +35,9 @@ public class Review implements Serializable{
 	@JsonView( JsonViews.Summary.class )
 	private String id;
 	
-	@JsonView( JsonViews.Summary.class )
-	private String author;
+	@JsonView( JsonViews.ReviewDetails.class )
+	@ManyToOne
+	private User author;
 	
 	@JsonView( JsonViews.Summary.class )
 	@Column( nullable = false )
@@ -54,7 +55,7 @@ public class Review implements Serializable{
 	@ManyToOne
 	private User user;
 
-	public Review(String id, String author, String text, Integer rating, User user, LocalDateTime dateCreated) {
+	public Review(String id, User author, String text, Integer rating, User user, LocalDateTime dateCreated) {
 		this.id = id;
 		this.author = author;
 		this.text = text;
@@ -63,7 +64,7 @@ public class Review implements Serializable{
 		this.dateCreated = dateCreated;
 	}
 	
-	public Review(String author, String text, Integer rating, User user) {
+	public Review(User author, String text, Integer rating, User user) {
 		this(null, author, text, rating, user, LocalDateTime.now());
 	}
 	
