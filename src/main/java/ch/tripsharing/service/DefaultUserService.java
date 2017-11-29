@@ -73,7 +73,7 @@ public class DefaultUserService implements UserService{
 			userFromRepo.setLastName(user.getLastName());
 		}
 		if (user.getPassword() != null) {
-			userFromRepo.setPassword(user.getPassword());
+			userFromRepo.setPassword(bcrypt.encode(user.getPassword()));
 		}
 		return this.userRepository.findById(id);
 	}

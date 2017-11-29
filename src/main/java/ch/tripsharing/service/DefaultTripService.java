@@ -37,8 +37,11 @@ public class DefaultTripService implements TripService {
 	public Trip updateTrip(Trip trip) {
 		
 		String id = trip.getId();
-		Trip tripToUpdate = this.findById(id);
-		if ( id == null || tripToUpdate == null ) {
+		if ( id == null ) {
+			return null; 
+		}
+		Trip tripToUpdate = this.tripRepository.findById(id);
+		if ( tripToUpdate == null ) {
 			return null; 
 		}
 		if ( trip.getName() != null ) {
@@ -107,6 +110,11 @@ public class DefaultTripService implements TripService {
 	public List<Trip> findByName(String name) {
 		return this.tripRepository.findByName(name);
 	}
+	
+	@Override
+	public List<Trip> findByNameIgnoreCaseContaining(String name) {
+		return this.tripRepository.findByNameIgnoreCaseContaining(name);
+	}
 
 	@Override
 	public void deleteById(String id) {
@@ -117,6 +125,11 @@ public class DefaultTripService implements TripService {
 				user.getTripsAttended().remove(trip);
 			});
 		this.tripRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Trip> findAll() {
+		return this.tripRepository.findAll();
 	}
 
 }
