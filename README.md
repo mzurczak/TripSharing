@@ -1,0 +1,76 @@
+# TripSharing backend
+
+### Backend stack
+* Java8
+* Spring Framework
+* H2 
+
+## Features
+This is a list of features that Yelp would like to see in all prototypes:
+* A user should be able to create a new account.
+* A user should be able to change its preferences: 
+  * First name, last name, email and password.
+* A user should be able to log in.
+* A user should be able to log out.
+* A user should be able to delete his/her account.
+* A anonymous or a registered user can access to / where a list of restaurants is going to be presented:
+  * An anonymous or a registered user in / can click on a restaurant and its information will be shown.
+* An anonymous or a registered user can access to /about 
+* An anonymous or a registered user can access to /contact
+* An anonymous or a registered user can search for a restaurant by name, and a list will be shown with all the matches.
+* A registered user can create a review.
+* In a restaurant page a user can edit/delete his/her reviews.
+
+## Domain
+### User
+* `id : String`
+* `firstName: String`
+* `lastName: String`
+* `email: String`
+* `password: String`
+* `tripsHosted: Array<Trip>`
+* `tripsAttended: Array<Trip>`
+* `about: String`
+
+### Trip
+* `id : String`
+* `title: String`
+* `description: String`
+* `startDate`
+* `endDate`
+* `places: Array`
+* `participants: Array<User>`
+* `photo: String (url)`
+
+### Review
+* `id : String`
+* `text: String`
+* `rating: Integer`
+* `dateCreated: LocalDate `
+* `user: User`
+* `author: User`
+
+## API endpoints
+
+Public paths:
+* `POST: /api/users/sign_in`
+* `POST: /api/users/sign_up`
+* `GET: /api/trips/searchName?=params` to search by title
+* `GET: /api/trips/searchPlace?=params` to search by places
+* `GET: /api/trips/` to retrieve all trips from database
+* `GET: /api/trips/:id` to retrieve specific trip from database
+
+Paths with auth:
+* `GET: /api/users/:id` to retrieve specific user
+* `PUT: /api/users/:id.` to edit user profile
+* `DELETE: /api/users/:id` to delete user profile 
+* `POST: /api/users/:id/review/new` to add review of user
+* `PUT: /api/users/:id/review/:id` to edit review
+* `DELETE: /api/users/:id/review/:id` to delete review
+* `GET: /api/users/me` to retrive info about currently logged user
+* `POST: /api/trips/create`
+* `PUT: /api/trips/:id` to edit trip
+* `DELETE: /api/trips/:id`
+
+## Next steps
+Write test.
