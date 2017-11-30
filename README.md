@@ -7,19 +7,17 @@
 
 ## Features
 This is a list of features that Yelp would like to see in all prototypes:
-* A user should be able to create a new account.
-* A user should be able to change its preferences: 
+* A usercan create a new account.
+* A user can change its preferences: 
   * First name, last name, email and password.
-* A user should be able to log in.
-* A user should be able to log out.
-* A user should be able to delete his/her account.
-* A anonymous or a registered user can access to / where a list of restaurants is going to be presented:
-  * An anonymous or a registered user in / can click on a restaurant and its information will be shown.
-* An anonymous or a registered user can access to /about 
-* An anonymous or a registered user can access to /contact
-* An anonymous or a registered user can search for a restaurant by name, and a list will be shown with all the matches.
-* A registered user can create a review.
-* In a restaurant page a user can edit/delete his/her reviews.
+* A user can log in.
+* A user can log out.
+* A user can delete his/her account.
+* A anonymous or a registered user can access list of trips where will be able to read basic information about trip.
+* An anonymous or a registered user can access to /about page 
+* An anonymous or a registered user can access to /contact page
+* An anonymous or a registered user can search for a trip by name and places, and a list will be shown with all the matches.
+* A registered user can create a review about other user.
 
 ## Domain
 ### User
