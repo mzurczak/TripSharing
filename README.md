@@ -6,7 +6,6 @@
 * H2 
 
 ## Features
-This is a list of features that Yelp would like to see in all prototypes:
 * A usercan create a new account.
 * A user can change its preferences: 
   * First name, last name, email and password.
