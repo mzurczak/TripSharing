@@ -1,0 +1,8 @@
+.Banner {
+  height: 500px;
+  background: url("../../resources/P6041077.JPG") no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
