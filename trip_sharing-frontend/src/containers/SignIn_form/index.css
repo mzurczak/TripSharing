@@ -1,0 +1,7 @@
+.SignIn {
+  padding: 0 10px;
+}
+form input {
+  line-height: 35px;
+  font-size: 12px;
+}

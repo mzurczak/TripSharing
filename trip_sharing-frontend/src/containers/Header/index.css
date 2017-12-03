@@ -1,0 +1,14 @@
+.Header {
+  background-color: Aquamarine;
+  height: 60px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+}
+
+#logo {
+  height: 100%;
+  cursor: pointer;
+  margin: auto;
+}
+

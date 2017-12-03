@@ -1,8 +1,27 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import Store from './store';
+
+import './index.css';
+import Home from './components/Home_page';
+import SearchPage from './components/Search_page';
+
+ReactDOM.render(
+  <Provider store = { Store }>
+    <MuiThemeProvider>
+      <Router>
+        <Switch>
+          <Route exact path = {'/'} component = { Home } />
+          <Route exact path = {'/trips/search_results'} component = { SearchPage } />
+        </Switch>
+      </Router>
+    </MuiThemeProvider>
+  </Provider>, 
+document.getElementById('root'));
 registerServiceWorker();
