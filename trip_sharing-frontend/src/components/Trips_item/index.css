@@ -1,0 +1,5 @@
+.TripList-gridList {
+  width: 500;
+  height: 450;
+  overflow-y: 'auto';
+}
