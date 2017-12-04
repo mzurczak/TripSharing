@@ -1,3 +1,30 @@
-.TripPage-joinButton {
-  background-color: Aquamarine;
+.TripInfo-container {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap
+}
+
+.TripInfo-description {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.TripInfo-description p{
+  font-size: 20px;
+  line-height: 35px
+}
+
+.TripInfo-glance {
+  width: 60%;
+}
+
+.TripInfo-glance ul{
+  font-size: 20px;
+  line-height: 35px;
+}
+
+.TripInfo-participants {
+  width: 30%;
 }

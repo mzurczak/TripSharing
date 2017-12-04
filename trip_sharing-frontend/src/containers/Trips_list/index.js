@@ -24,8 +24,8 @@ class TripList extends Component {
           padding = { 15 }
         >
           { (this.props.trips.length !== 0)
-            ? Object.values(this.props.trips).map((trip) => (
-            <TripItem trip = { trip } key = { trip.id }/>
+            ? Object.values(this.props.trips).map((trip, index) => (
+            <TripItem trip = { trip } key = { index }/>
           ))
           : "Loadign list of trips..."
         }
