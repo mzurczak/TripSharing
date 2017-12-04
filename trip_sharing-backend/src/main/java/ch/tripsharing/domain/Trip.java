@@ -85,6 +85,18 @@ public class Trip {
 		this.endDate = endDate;
 	}
 	
+	public Trip(String id, String title, String description, User organizer, String startDate, String endDate, String photo, String place, String newParticipant, String transportation) {
+		this.id = id;
+		this.name = title;
+		this.description = description;
+		this.host = organizer;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.places.add(place);
+//		this.participants.add(newParticipat);
+		this.transportation = transportation;
+	}
+	
 	public Trip(String title, String description, User organizer, String startDate, String endDate) {
 		this(null, title, description, organizer, startDate, endDate);
 	}
