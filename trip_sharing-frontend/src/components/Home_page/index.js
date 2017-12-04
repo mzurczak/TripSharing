@@ -8,6 +8,6 @@ export default () => (
   <div>
     <Header />
     <Banner />
-    {/* <TripsList /> */}
+    <TripsList />
   </div>
 )

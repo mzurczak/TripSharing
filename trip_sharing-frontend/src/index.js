@@ -11,6 +11,11 @@ import Store from './store';
 import './index.css';
 import Home from './components/Home_page';
 import SearchPage from './components/Search_page';
+import TripPage from './containers/Trip_page';
+import { fetchAllTrips } from './utils/fetch_functions';
+
+Store.dispatch(fetchAllTrips());
+console.log(Store.getState())
 
 ReactDOM.render(
   <Provider store = { Store }>
@@ -19,9 +24,12 @@ ReactDOM.render(
         <Switch>
           <Route exact path = {'/'} component = { Home } />
           <Route exact path = {'/trips/search_results'} component = { SearchPage } />
+          <Route exact path = {'/trips/:tripId'} component = { TripPage } />
         </Switch>
       </Router>
     </MuiThemeProvider>
   </Provider>, 
 document.getElementById('root'));
 registerServiceWorker();
+
+console.log(Store.getState())

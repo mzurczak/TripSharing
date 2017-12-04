@@ -1,5 +1,11 @@
 import { addToken, addUser, addTrips } from "../store/actions_creators"
 
+/***************************************
+ * 
+ * User-fetching functions 
+ * 
+ ***************************************/
+
 export const fetchSignIn = (user) => (dispatch) => {
   const myHeaders = new Headers({
     'Content-Type': 'application/json'
@@ -66,8 +72,35 @@ export const fetchUser = () => (dispatch) => {
   }
 }
 
+/***************************************
+ * 
+ * Trip-fetching functions 
+ * 
+ ***************************************/
+
+export const fetchAllTrips = () => (dispatch) => {
+  const myHeaders = new Headers({
+    'Content-Type': 'application/json'
+  });
+
+  const config = {
+    method: "GET",
+    headers: myHeaders,
+  }
+
+  const url = `http://localhost:8080/api/trips/`
+  return fetch(url, config)
+    .then(res => res.json())
+    .then(data => {
+      const trips = {};
+      data.forEach( trip => {
+        trips[trip.id] = trip;
+      });
+      dispatch(addTrips(trips));
+  })
+}
+
 export const fetchSearching = (searchItem) => (dispatch) => {
-  console.log(searchItem);
   const myHeaders = new Headers({
     'Content-Type': 'application/json'
   });
@@ -85,6 +118,25 @@ export const fetchSearching = (searchItem) => (dispatch) => {
       data.forEach( trip => {
         trips[trip.id] = trip;
       });
+      dispatch(addTrips(trips));
+  })
+}
+
+export const fetchSpecificTrip = (tripId) => (dispatch) => {
+  const myHeaders = new Headers({
+    'Content-Type': 'application/json'
+  });
+
+  const config = {
+    method: "GET",
+    headers: myHeaders,
+  }
+
+  const url = `http://localhost:8080/api/trips/${tripId}`
+  return fetch(url, config)
+    .then(res => res.json())
+    .then(data => {
+      const trips = {...data};
       dispatch(addTrips(trips));
   })
 }

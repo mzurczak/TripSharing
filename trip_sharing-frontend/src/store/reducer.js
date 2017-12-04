@@ -31,9 +31,9 @@ const userReducer = (state=userInitialState, action) => {
 }
 
 const tripsInitialState = {
-  trips: {
-    initial: 'initial'
-  }
+  trips: { 
+    
+   }
 }
 
 const tripsReducer = (state = tripsInitialState, action) => {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
@@ -35,4 +36,10 @@ class UserActionContainer extends Component {
     )
   }
 }
-export default UserActionContainer;
+
+const mapStateToProps = ( {userReducer} ) => {
+  return({
+    token: userReducer.token
+  })
+}
+export default connect( mapStateToProps )(UserActionContainer);

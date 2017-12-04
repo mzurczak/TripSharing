@@ -51,7 +51,8 @@ class SignInForm extends Component {
       password: this.state.password
     }
     this.props.dispatch(fetchSignIn(user))
-    .then(() => this.props.dispatch(fetchUser()));
+    .then(() => this.props.dispatch(fetchUser()))
+    .then(()=> this.props.history.push('/'));
   }
   
   render() {

@@ -6,7 +6,7 @@ import Unlogged from '../../containers/UserActionButton_unlogged';
 import Logged from '../../containers/UserActionButton_logged';
 
 export default class UserActionMenu extends Component {
-  
+
   render() {
     
     const renderMenu = () => (localStorage.getItem('token'))
