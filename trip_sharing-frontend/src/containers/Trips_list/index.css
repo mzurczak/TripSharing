@@ -1,0 +1,10 @@
+.TripList {
+  width: 75%;
+  cursor: pointer;
+  margin: 50px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
