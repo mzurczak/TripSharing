@@ -1,0 +1,30 @@
+.TripCoverPhoto {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.TripCoverPhoto h1 {
+  background-color: white;
+  border-radius: 30px;
+  opacity: 0.8;
+  padding: 15px 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.TripCoverPhoto h3 {
+  background-color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 1px;
+  margin-top: 30px;
+  opacity: 0.8;
+  padding: 5px 15px;
+  border-radius: 10px; 
+}
+
