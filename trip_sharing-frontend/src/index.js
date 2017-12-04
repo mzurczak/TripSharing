@@ -15,7 +15,6 @@ import TripPage from './containers/Trip_page';
 import { fetchAllTrips } from './utils/fetch_functions';
 
 Store.dispatch(fetchAllTrips());
-console.log(Store.getState())
 
 ReactDOM.render(
   <Provider store = { Store }>
@@ -23,7 +22,7 @@ ReactDOM.render(
       <Router>
         <Switch>
           <Route exact path = {'/'} component = { Home } />
-          <Route exact path = {'/trips/search_results'} component = { SearchPage } />
+          <Route exact path = {'/search/:searchTrip'} component = { SearchPage } />
           <Route exact path = {'/trips/:tripId'} component = { TripPage } />
         </Switch>
       </Router>
@@ -31,5 +30,3 @@ ReactDOM.render(
   </Provider>, 
 document.getElementById('root'));
 registerServiceWorker();
-
-console.log(Store.getState())

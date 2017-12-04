@@ -92,6 +92,7 @@ public class Trip {
 		this.host = organizer;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.photo = photo;
 		this.places.add(place);
 //		this.participants.add(newParticipat);
 		this.transportation = transportation;

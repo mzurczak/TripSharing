@@ -15,7 +15,6 @@ class TripPage extends Component {
   }
   
   render(){
-    console.log(this.props.trip);
     return(
       <div>
         <Header />
@@ -27,7 +26,9 @@ class TripPage extends Component {
             : "" }
           />
         <div className = "TripPage-body">
-          <TripInfo />
+          <TripInfo trip = { (this.props.trip !== undefined) 
+            ? this.props.trip
+            : "" }/>
         </div>
       </div>
     )
