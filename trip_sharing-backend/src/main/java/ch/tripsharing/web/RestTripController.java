@@ -107,9 +107,10 @@ public class RestTripController {
 		String endDate = json.get("endDate");
 		String photo = json.get("photo");
 		String newPlace = json.get("places");
-		String newParticipant= json.get("participants");
+		String newParticipantId= json.get("participants");
+		User user = userService.findById(newParticipantId);
 		String transportation = json.get("transportation");
-		Trip newTrip = new Trip(tripId, name, description, host, startDate, endDate, photo, newPlace, newParticipant, transportation);
+		Trip newTrip = new Trip(tripId, name, description, host, startDate, endDate, photo, newPlace, user, transportation);
 		
 		if (isAuthenticated(request, host.getId())) {
 			return this.tripService.updateTrip(newTrip);

@@ -85,7 +85,7 @@ public class Trip {
 		this.endDate = endDate;
 	}
 	
-	public Trip(String id, String title, String description, User organizer, String startDate, String endDate, String photo, String place, String newParticipant, String transportation) {
+	public Trip(String id, String title, String description, User organizer, String startDate, String endDate, String photo, String place, User newParticipant, String transportation) {
 		this.id = id;
 		this.name = title;
 		this.description = description;
@@ -94,7 +94,7 @@ public class Trip {
 		this.endDate = endDate;
 		this.photo = photo;
 		this.places.add(place);
-//		this.participants.add(newParticipat);
+		this.participants.add(newParticipant);
 		this.transportation = transportation;
 	}
 	
