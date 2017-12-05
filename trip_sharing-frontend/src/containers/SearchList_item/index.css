@@ -16,4 +16,11 @@
 
 .SearchList-description {
   width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.SearchList-description p{
+  width: 100%;
 }

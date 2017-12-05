@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import './index.css'
 
 import Header from '../../containers/Header'
-import SearchList from '../../containers/SearchList'
+import SearchList from '../SearchList'
 import { fetchSearching } from '../../utils/fetch_functions';
 
 

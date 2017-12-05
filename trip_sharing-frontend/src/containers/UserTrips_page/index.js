@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 
 import './index.css'
 
-import Header from '../../containers/Header'
-import SearchList from '../../containers/SearchList'
-import { fetchAllTrips, fetchUser } from '../../utils/fetch_functions';
+import Header from '../../containers/Header';
+import SearchList from '../../components/SearchList';
+import { fetchAllTrips } from '../../utils/fetch_functions';
 
 
 class UserTripsPage extends Component {
   
   componentWillMount(){
-    this.props.dispatch(fetchUser());
     this.props.dispatch(fetchAllTrips());
   }
 

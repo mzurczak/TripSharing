@@ -9,13 +9,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Store from './store';
 
 import './index.css';
+
+import EditTripPage from './containers/EditTrip_page'
 import Home from './components/Home_page';
 import SearchPage from './components/Search_page';
 import TripPage from './containers/Trip_page';
 import UserTripsPage from './containers/UserTrips_page'
-import { fetchAllTrips } from './utils/fetch_functions';
+import { fetchUser } from './utils/fetch_functions';
 
-Store.dispatch(fetchAllTrips());
+Store.dispatch(fetchUser());
 
 ReactDOM.render(
   <Provider store = { Store }>
@@ -25,6 +27,7 @@ ReactDOM.render(
           <Route exact path = {'/'} component = { Home } />
           <Route exact path = {'/search/:searchTrip'} component = { SearchPage } />
           <Route exact path = {'/trips/:tripId'} component = { TripPage } />
+          <Route exact path = {'/trips/edit/:tripId'} component = { EditTripPage } />
           <Route exact path = {'/mytrips'} component = { UserTripsPage } />
         </Switch>
       </Router>
