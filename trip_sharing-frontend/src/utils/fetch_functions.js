@@ -140,3 +140,26 @@ export const fetchSpecificTrip = (tripId) => (dispatch) => {
       dispatch(addTrips(trips));
   })
 }
+
+export const fetchEditTrip = (tripId) => (dispatch) => {
+  const tokenJSON = localStorage.getItem('token');
+  const token = JSON.parse(tokenJSON);
+  if (token){
+    const myHeaders = new Headers({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${ token }`
+    });
+
+    const config = {
+      method: "PUT",
+      headers: myHeaders,
+    }
+    const url = `http://localhost:8080/api/trips/${tripId}`
+    return fetch(url, config)
+      .then(res => res.json())
+      .then(data => {
+        const trips = {...data};
+        dispatch(addTrips(trips));
+    })
+  }
+}
