@@ -10,7 +10,6 @@ import {List, ListItem} from 'material-ui/List';
 
 import './index.css';
 import { logOut } from '../../store/actions_creators';
-import { fetchAllTrips } from '../../utils/fetch_functions';
 
 class UserActionButtons_logged extends Component {
 
