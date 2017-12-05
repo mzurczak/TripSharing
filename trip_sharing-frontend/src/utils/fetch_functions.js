@@ -136,12 +136,13 @@ export const fetchSpecificTrip = (tripId) => (dispatch) => {
   return fetch(url, config)
     .then(res => res.json())
     .then(data => {
-      const trips = {...data};
+      const trips = {}
+      trips[data.id] = {...data};
       dispatch(addTrips(trips));
   })
 }
 
-export const fetchEditTrip = (tripId) => (dispatch) => {
+export const fetchEditTrip = (trip) => (dispatch) => {
   const tokenJSON = localStorage.getItem('token');
   const token = JSON.parse(tokenJSON);
   if (token){
@@ -153,13 +154,34 @@ export const fetchEditTrip = (tripId) => (dispatch) => {
     const config = {
       method: "PUT",
       headers: myHeaders,
+      body: JSON.stringify(trip)
     }
-    const url = `http://localhost:8080/api/trips/${tripId}`
+
+    const url = `http://localhost:8080/api/trips/${trip.id}`
     return fetch(url, config)
       .then(res => res.json())
       .then(data => {
-        const trips = {...data};
+        const trips = {}
+        trips[data.id] = {...data};
         dispatch(addTrips(trips));
     })
+  }
+}
+
+export const fetchDeleteTrip = (tripId) => () => {
+  const tokenJSON = localStorage.getItem('token');
+  const token = JSON.parse(tokenJSON);
+  if (token){
+    const myHeaders = new Headers({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${ token }`
+    });
+
+    const config = {
+      method: "DELETE",
+      headers: myHeaders,
+    }
+    const url = `http://localhost:8080/api/trips/${tripId}`
+    return fetch(url, config);
   }
 }

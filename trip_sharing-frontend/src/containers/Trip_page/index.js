@@ -10,22 +10,24 @@ import { fetchSpecificTrip } from '../../utils/fetch_functions'
 
 class TripPage extends Component {
 
-  componentWillMount(){
+  componentDidMount(){
     this.props.dispatch(fetchSpecificTrip(this.props.match.params.tripId))
   }
   
   render(){
-    if(this.props.trip.host !== undefined){
+    const { trip } = this.props;
+    if(trip.length > 0){
+      console.log('Trip page', trip)
       return(
         <div>
           <Header />
           <CoverPhoto 
-            photoUrl = { this.props.trip.photo } 
-            name = { this.props.trip.name }
-            host = { this.props.trip.host.username }
+            photoUrl = {trip[0].photo } 
+            name = { trip[0].name }
+            host = { trip[0].host.username }
           />
           <div className = "TripPage-body">
-            <TripInfo trip = { this.props.trip }/>
+            <TripInfo trip = { trip[0] }/>
           </div>
         </div>
       )
@@ -37,7 +39,7 @@ class TripPage extends Component {
 
 const mapStateToProps = ( {tripsReducer} ) => {
   return ({
-    trip: tripsReducer.trips
+    trip: Object.values(tripsReducer.trips)
   })
 }
 

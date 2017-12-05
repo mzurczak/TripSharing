@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import './index.css';
 
-import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 
 import TripItem from '../../components/Trips_item';
@@ -20,18 +20,10 @@ class SearchListItem extends Component {
     const { trip, user  } = this.props;
     const renderEditButton = () => {
       if (user.username === trip.host.username) {
-        const tripId = trip.id;
         return (
-          <FlatButton
-            style = {{backgroundColor: "Aquamarine", color: "black"}}
-            label="Edit"
-            labelPosition="after"
-            primary={true}
-            icon={
-              <FontIcon className="material-icons" hoverColor = "white" style = {{cursor: "pointer"}}>edit</FontIcon>
-            }
-            onClick = { this.handleEditTrip }
-          />)
+          <IconButton style = {{ color: "black"}} onClick = { this.handleEditTrip }>
+            <FontIcon className="material-icons" style = {{cursor: "pointer"}}>create</FontIcon>
+          </IconButton>)
       }
     }
 

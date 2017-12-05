@@ -41,7 +41,7 @@ const tripsReducer = (state = tripsInitialState, action) => {
   switch ( action.type ) {
     case 'addTrips' :{
       return {
-        trips: action.trips
+        trips:  action.trips
       }
     }
     default :{

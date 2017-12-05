@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
 
 import './index.css'
 
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
-import { fetchUser } from '../../utils/fetch_functions';
+import { fetchUser, fetchEditTrip } from '../../utils/fetch_functions';
 
 
 class TripInfo extends Component {
 
   handleJoinTrip = () => {
-    this.props.dispatch(fetchUser())
-    .then(() => {
-      const user = { ...this.props.user}
-      console.log(user)
-    })
+    const user = { ...this.props.user}
+    const tripWithNewParticipant = { id: this.props.trip.id, participants: user.id };
+    console.log(JSON.stringify(tripWithNewParticipant));
+    this.props.dispatch(fetchEditTrip(tripWithNewParticipant))
   }
 
   render(){
@@ -81,4 +81,4 @@ const mapStateToProps = ( { userReducer } ) => {
   })
 }
 
-export default connect(mapStateToProps)(TripInfo);
+export default connect(mapStateToProps)(withRouter(TripInfo));

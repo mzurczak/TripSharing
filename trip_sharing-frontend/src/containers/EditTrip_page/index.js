@@ -1,170 +1,120 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 import { withRouter } from 'react-router-dom';
+import Moment from 'moment'
+
+import DatePicker from 'material-ui/DatePicker';
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
+import TextField from 'material-ui/TextField';
 
 import './index.css'
 
 import Header from '../Header';
-import { fetchUser } from '../../utils/fetch_functions';
-
-const styles = {
-  activeButton: {
-    backgroundColor: 'rgb(33, 150, 243)',
-    marginTop: '10px'
-  },
-  deleteButton: {
-    backgroundColor: 'red',
-    marginTop: '10px'
-  },
-}
+import { fetchSpecificTrip, fetchEditTrip, fetchDeleteTrip } from '../../utils/fetch_functions';
 
 class EditUser extends Component {
   
   componentDidMount() {
-    this.props.dispatch(fetchUser())
+    this.props.dispatch(fetchSpecificTrip(this.props.match.params.tripId))
   }
 
   constructor () {
     super();
-
-    this.state = {
-      // firstName: null,
-      // lastName: null,
-      // email: null,
-      // currentPassword: null,
-      // newPassword: null,
-      // passwordConfirmed: false,
-    }
+    this.state = {}
   }
 
-  handleFirstNameChange = (e) => {
+  handleNameChange = (e) => {
     this.setState({
-      firstName: e.currentTarget.value,
+      name: e.currentTarget.value,
     })
   }
 
-  handleLastNameChange = (e) => {
+  handleDescriptionChange = (e) => {
     this.setState({
-      lastName: e.currentTarget.value,
+      description: e.currentTarget.value,
     })
   }
 
-  handleEmailChange = (e) => {
+  handleStartDate = (event, date) => {
+    let moment = new Moment(date);
+    let startDate = moment.format('DD/MM/YYYY')
     this.setState({
-      email: e.currentTarget.value,
+      startDate
     });
   }
 
-  handleCurrentPasswordChange = (e) => {
+  handleEndDate = (event, date) => {
+    let moment = new Moment(date);
+    let endDate = moment.format('DD/MM/YYYY')
     this.setState({
-      currentPassword: e.currentTarget.value,
-    })
-  }
-  handleNewPasswordChange = (e) => {
-    this.setState({
-      newPassword: e.currentTarget.value,
+      endDate
     })
   }
 
-  handlePasswordConfirmation = (e) => {
+  handleEdit = (e) => {
     e.preventDefault();
-    this.setState({
-      passwordConfirmed: (this.state.newPassword === e.currentTarget.value)
-    }) 
+    let newTrip = { ...this.state }
+    newTrip.id = this.props.match.params.tripId;
+    this.props.dispatch(fetchEditTrip(newTrip))
+      .then(() => {
+        this.setState({})
+        this.props.history.push(`/trips/${newTrip.id}`)
+      });
   }
-
-  // handleDeleteConfirmation = (e) => {
-  //   e.preventDefault();
-  //   return ((this.state.newPassword === e.currentTarget.value))
-  // }
   
-  // handleEdit = (e) => {
-  //   e.preventDefault();
-  //   let newData = { ...this.state }
-  //   let userId = this.props.user.id;
-  //   this.props.dispatch(fetchEditUser(newData, userId))
-  //     .then(() => {
-  //       this.setState({})
-  //       this.props.history.push("/")
-  //     });
-  // }
-  
-  // handleDelete = (e) => {
-  //   e.preventDefault();
-  //   let userId = this.props.user.id;
-  //   this.props.dispatch(fetchDeleteUser(userId))
-  //     .then(() => {
-  //       localStorage.clear()
-  //       this.props.dispatch(fetchRestaurantList())
-  //       this.props.history.push("/")
-  //     });
-  // }
+  handleDelete = (e) => {
+    e.preventDefault();
+    let tripId = this.props.match.params.tripId;
+    this.props.dispatch(fetchDeleteTrip(tripId))
+      .then(() => {
+        this.props.history.push("/")
+      });
+  }
   
   render() {
   
-    const activeButton = (
-      <FlatButton 
-      label="Send changes"  
-      style = { styles.activeButton }
-      onClick = { this.handleEdit }
-    />)
-    
-    const deleteButton = (
-      <FlatButton 
-      label="Delete account"  
-      style = { styles.deleteButton }
-      onClick = { this.handleEdit }
-    />)
-  
-    const inactiveButton = (
-      <FlatButton 
-      label=" "  
-      disabled={true}
-    />)
-  
-    const renderButton =  activeButton;
-
+    const renderButtons = () => {
+      return (
+        <div>
+          <IconButton onClick = { this.handleEdit } >
+            <FontIcon className="material-icons" style = {{cursor: "pointer"}}>save</FontIcon>
+          </IconButton>
+          <IconButton onClick = { this.handleDelete } >
+            <FontIcon className="material-icons" hoverColor = "red" style = {{cursor: "pointer"}}>delete</FontIcon>
+          </IconButton>
+        </div>
+      )
+    }
     return (
       <div>
         <Header />
         <div className="Edit-body">
-          <h2>Edit your profile </h2>
+          <h2>Edit your trip </h2>
           <form>
             <TextField
-              hintText = "First name"
-              floatingLabelText = "First name"
-              onChange={ this.handleFirstNameChange }
+              hintText = "Name"
+              floatingLabelText = "Trip name"
+              defaultValue = { this.props.trip.name }
+              onChange = { this.handleNameChange }
             /><br />
             <TextField
-              hintText = "Last name"
-              floatingLabelText = "Last name"
-              onChange={ this.handleLastNameChange }
+              hintText = "Description"
+              floatingLabelText = "Description"
+              defaultValue = { this.props.trip.description }
+              onChange = { this.handleDescriptionChange }
             /><br />
-            <TextField
-              hintText = "example@example.com"
-              floatingLabelText = "Email"
-              onChange={ this.handleEmailChange }
+            <DatePicker
+              onChange = { this.handleStartDate }
+              floatingLabelText = "Start date"
+              // defaultDate = { this.props.trip.startDate }
             /><br />
-            <TextField
-              hintText = "New password"
-              floatingLabelText = "New password"
-              type = "password"
-              onChange={ this.handleNewPasswordChange }
+            <DatePicker
+              onChange = { this.handleEndDate }
+              floatingLabelText = "End date"
+              // defaultDate = { this.props.trip.endDate }
             /><br />
-            <TextField
-              hintText = "Confirm new password"
-              floatingLabelText = "Confirm new password"
-              type = "password"
-              onChange={ this.handlePasswordConfirmation }
-            /><br />
-            { activeButton }
-            <FlatButton 
-              label="Delete account"  
-              style = { styles.deleteButton }
-              onClick = { this.handleDelete }
-            />
+            { renderButtons() }
           </form>
         </div>
       </div>
@@ -172,10 +122,10 @@ class EditUser extends Component {
   }
 }
 
-const mapStateToProps = ( {userReducer} ) => {
+const mapStateToProps = ( { tripsReducer } ) => {
 
   return({
-    user: userReducer.userInfo
+    trip: tripsReducer.trips
   })
 }
 export default connect(mapStateToProps)(withRouter(EditUser))

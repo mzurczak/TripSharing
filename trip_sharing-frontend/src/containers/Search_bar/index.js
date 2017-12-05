@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import { withRouter } from 'react-router-dom';
 
-import { fetchSearching } from '../../utils/fetch_functions';
+import { fetchSearching, fetchAllTrips } from '../../utils/fetch_functions';
 
 import './index.css'
 
@@ -31,6 +31,9 @@ const styles = {
 
 class SearchBar extends Component {
 
+  componentDidMount(){
+    this.props.dispatch(fetchAllTrips())
+  }
   constructor(){
     super();
 
@@ -79,13 +82,14 @@ class SearchBar extends Component {
 }
 
 const mapStateToProps = ( { tripsReducer }) => {
-  const trips = Object.values(tripsReducer.trips);
   var tripNames = []
-  trips.forEach( trip => {
-    if (trip.name !== undefined){
-      tripNames.push(trip.name.toLowerCase())
+  if (Object.keys(tripsReducer.trips).length > 0) {
+    const trips = tripsReducer.trips;
+    for (let trip in  trips) {
+      let newName = trips[trip].name.toLowerCase();
+      tripNames.push(newName)
     }
-  })
+  } 
   return ({
     tripNames
   })

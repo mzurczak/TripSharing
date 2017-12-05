@@ -15,9 +15,10 @@ import Home from './components/Home_page';
 import SearchPage from './components/Search_page';
 import TripPage from './containers/Trip_page';
 import UserTripsPage from './containers/UserTrips_page'
-import { fetchUser } from './utils/fetch_functions';
+import { fetchUser, fetchAllTrips } from './utils/fetch_functions';
 
 Store.dispatch(fetchUser());
+Store.dispatch(fetchAllTrips());
 
 ReactDOM.render(
   <Provider store = { Store }>
