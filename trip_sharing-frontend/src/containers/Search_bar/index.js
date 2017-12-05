@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import AutoComplete from 'material-ui/AutoComplete';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
-import TextField from 'material-ui/TextField';
 import { withRouter } from 'react-router-dom';
 
 import { fetchSearching } from '../../utils/fetch_functions';
@@ -40,33 +41,33 @@ class SearchBar extends Component {
 
   handleChangeSearchItem = (e) => {
     this.setState({
-      searchItem: e.currentTarget.value
+      searchItem: e.toLowerCase()
     });
   }
 
-  handleSearch = (e) => {
-    e.preventDefault();
+  handleSearch = () => {
     const searchItem = this.state.searchItem;
     this.props.dispatch(fetchSearching(searchItem))
-      .then(() => this.props.history.push(`/trips/search_results`));
+      .then(() => this.props.history.push(`/search/${ searchItem }`));
   }
 
   render(){
     return(
       <span className = "SearchBar">
-        <form 
-          onSubmit = { this.handleSearch }>
-          <TextField 
-            id = "search-text-field"
+        <form >
+          <AutoComplete 
             hintText = "Search your next adventure..."
             style = { styles.searchBox } 
             underlineShow = {false}
-            onChange = { this.handleChangeSearchItem }
+            onUpdateInput = { this.handleChangeSearchItem }
+            onNewRequest = { this.handleSearch }
             inputStyle = {
               { fontSize: '25px', 
                 fontWeight: '200',
               }
-            }/>
+            }
+            dataSource = { this.props.tripNames }
+            />
           <FlatButton 
             icon = {<FontIcon className="material-icons">search</FontIcon>}
             style = { styles.searchButton } 
@@ -77,4 +78,16 @@ class SearchBar extends Component {
   }
 }
 
-export default connect()(withRouter(SearchBar))
+const mapStateToProps = ( { tripsReducer }) => {
+  const trips = Object.values(tripsReducer.trips);
+  var tripNames = []
+  trips.forEach( trip => {
+    if (trip.name !== undefined){
+      tripNames.push(trip.name.toLowerCase())
+    }
+  })
+  return ({
+    tripNames
+  })
+}
+export default connect(mapStateToProps)(withRouter(SearchBar))
