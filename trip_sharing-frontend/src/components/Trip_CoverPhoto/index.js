@@ -11,7 +11,7 @@ class TripCoverPhoto extends Component {
         style = {
           (this.props !== undefined ) 
           ? { background: `url(${this.props.photoUrl}) no-repeat center center`,
-          height: "300px", backgroundSize: "contain" }
+          height: "300px", backgroundSize: "cover" }
           : {}
       } >
         <h1> { 
