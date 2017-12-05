@@ -5,9 +5,18 @@ import './index.css'
 
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
+import { fetchUser } from '../../utils/fetch_functions';
 
 
 class TripInfo extends Component {
+
+  handleJoinTrip = () => {
+    this.props.dispatch(fetchUser())
+    .then(() => {
+      const user = { ...this.props.user}
+      console.log(user)
+    })
+  }
 
   render(){
     if ( this.props.trip !== undefined ) {
@@ -21,6 +30,7 @@ class TripInfo extends Component {
           icon={
             <FontIcon className="material-icons" hoverColor = "white" style = {{cursor: "pointer"}}>add_circle</FontIcon>
           }
+          onClick = { this.handleJoinTrip }
           />
           <div className = "TripInfo-description">
             <h2>Description: </h2>
@@ -33,12 +43,29 @@ class TripInfo extends Component {
             <h2>Trip at glance: </h2> 
             <ul>
               <li> Places: </li> 
-              <li> {`Transportation: ${ this.props.trip.transportation }`} </li> 
+                <ul>
+                  {
+                    this.props.trip.places.map( (place, index) => 
+                    (<li key = { index }> { place } </li>))
+                  }
+                </ul>
+              <li> {`Transportation: ${ 
+                (this.props.trip.transportation!==undefined)
+                ? this.props.trip.transportation
+                : "-"  }`} </li> 
               <li> Budget forecast: </li> 
             </ul> 
           </div>
           <div className = "TripInfo-participants">
-            <h2>Participants: </h2>  
+            <h2>Participants: </h2> 
+            <ul>
+              {
+                (this.props.trip.participants.length > 0)
+                ? this.props.trip.participants.map( (user, index) => 
+                (<li key = { index }> { user.username } </li>))
+                : "Be the first one and apply!"
+              }
+            </ul> 
           </div>
         </div>
       )
@@ -48,10 +75,10 @@ class TripInfo extends Component {
   }
 }
 
-// const mapStateToProps = ( {tripsReducer} ) => {
-//   return ({
-//     trip: tripsReducer.trips
-//   })
-// }
+const mapStateToProps = ( { userReducer } ) => {
+  return ({
+    user: userReducer.userInfo
+  })
+}
 
-export default connect()(TripInfo);
+export default connect(mapStateToProps)(TripInfo);

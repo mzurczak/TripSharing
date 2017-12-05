@@ -15,23 +15,23 @@ class TripPage extends Component {
   }
   
   render(){
-    return(
-      <div>
-        <Header />
-        <CoverPhoto 
-          photoUrl = { this.props.trip.photo } 
-          name = { this.props.trip.name }
-          host = { (this.props.trip.host !== undefined) 
-            ? this.props.trip.host.username
-            : "" }
+    if(this.props.trip.host !== undefined){
+      return(
+        <div>
+          <Header />
+          <CoverPhoto 
+            photoUrl = { this.props.trip.photo } 
+            name = { this.props.trip.name }
+            host = { this.props.trip.host.username }
           />
-        <div className = "TripPage-body">
-          <TripInfo trip = { (this.props.trip !== undefined) 
-            ? this.props.trip
-            : "" }/>
+          <div className = "TripPage-body">
+            <TripInfo trip = { this.props.trip }/>
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return "Loading..."
+    }
   }
 }
 
