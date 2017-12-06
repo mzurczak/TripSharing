@@ -1,37 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
 
 import './index.css'
 
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
-import { fetchUser } from '../../utils/fetch_functions';
+import { fetchEditTrip } from '../../utils/fetch_functions';
 
 
 class TripInfo extends Component {
 
   handleJoinTrip = () => {
-    this.props.dispatch(fetchUser())
-    .then(() => {
-      const user = { ...this.props.user}
-      console.log(user)
-    })
+    const user = { ...this.props.user}
+    const tripWithNewParticipant = { id: this.props.trip.id, participants: user.id };
+    console.log(JSON.stringify(tripWithNewParticipant));
+    this.props.dispatch(fetchEditTrip(tripWithNewParticipant))
   }
 
+  renderJoinButton = () => {
+    if (localStorage.getItem('token')){
+      return(
+        <FlatButton
+        style = {{backgroundColor: "Aquamarine", color: "black"}}
+        label="Join trip"
+        labelPosition="after"
+        primary={true}
+        icon={
+          <FontIcon className="material-icons" hoverColor = "white" style = {{cursor: "pointer"}}>add_circle</FontIcon>
+        }
+        onClick = { this.handleJoinTrip }
+        />
+      )
+    } else {
+      return ""
+    }
+  }
   render(){
+    console.log(this.props)
     if ( this.props.trip !== undefined ) {
       return(
         <div className = "TripInfo-container">
-          <FlatButton
-          style = {{backgroundColor: "Aquamarine", color: "black"}}
-          label="Join trip"
-          labelPosition="after"
-          primary={true}
-          icon={
-            <FontIcon className="material-icons" hoverColor = "white" style = {{cursor: "pointer"}}>add_circle</FontIcon>
-          }
-          onClick = { this.handleJoinTrip }
-          />
+          { this.renderJoinButton()}
           <div className = "TripInfo-description">
             <h2>Description: </h2>
             <p> { 
@@ -42,6 +52,7 @@ class TripInfo extends Component {
           <div className = "TripInfo-glance">
             <h2>Trip at glance: </h2> 
             <ul>
+              <li> Date: {`${ this.props.trip.startDate} - ${ this.props.trip.endDate}`}</li> 
               <li> Places: </li> 
                 <ul>
                   {
@@ -60,10 +71,13 @@ class TripInfo extends Component {
             <h2>Participants: </h2> 
             <ul>
               {
-                (this.props.trip.participants.length > 0)
-                ? this.props.trip.participants.map( (user, index) => 
-                (<li key = { index }> { user.username } </li>))
-                : "Be the first one and apply!"
+                // (this.props.trip.participants.length > 0)
+                // ? this.props.trip.participants.map( (user, index) => {
+                //   (user !== null)
+                //   ?(<li key = { index }> { user.username } </li>)
+                //   : "Be the first one and apply!"
+                // })
+                // : "Be the first one and apply!"
               }
             </ul> 
           </div>
@@ -81,4 +95,4 @@ const mapStateToProps = ( { userReducer } ) => {
   })
 }
 
-export default connect(mapStateToProps)(TripInfo);
+export default connect(mapStateToProps)(withRouter(TripInfo));

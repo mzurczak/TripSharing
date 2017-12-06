@@ -96,7 +96,7 @@ public class User implements UserDetails {
 	
 	@JsonView( JsonViews.TripListInUser.class )
 	@ElementCollection(targetClass=Trip.class)
-	private Set<Trip> tripsAttended = new HashSet<>();
+	private Collection<Trip> tripsAttended = new HashSet<>();
 	
 	@ManyToMany( fetch = FetchType.EAGER )
 	@JoinTable( name = "user_roles" )

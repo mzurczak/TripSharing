@@ -1,0 +1,12 @@
+.Edit-body {
+  width: 80%;
+  margin: auto;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.Edit-body h2 {
+  width: 100%;
+}

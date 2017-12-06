@@ -74,13 +74,11 @@ public class DefaultTripService implements TripService {
 		}
 		if ( trip.getParticipants() != null ) {
 			List<User> participants = tripToUpdate.getParticipants();
-			trip.getParticipants()
-				.forEach(person -> {
-					if (!participants.contains(person)) {
-						participants.add(person);
-						person.addTripAttended(trip);
-					}
-				});
+			User person = trip.getParticipants().get(0);
+			if (!participants.contains(person)) {
+				participants.add(person);
+				person.addTripAttended(trip);
+			};
 			tripToUpdate.setParticipants(participants);
 		}
 		if ( trip.getTransportation() != null ) {
