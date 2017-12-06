@@ -145,6 +145,8 @@ export const fetchSpecificTrip = (tripId) => (dispatch) => {
 export const fetchEditTrip = (trip) => (dispatch) => {
   const tokenJSON = localStorage.getItem('token');
   const token = JSON.parse(tokenJSON);
+  console.log('token', token)
+  console.log('trip', trip)
   if (token){
     const myHeaders = new Headers({
       'Content-Type': 'application/json',
@@ -171,7 +173,10 @@ export const fetchEditTrip = (trip) => (dispatch) => {
 export const fetchDeleteTrip = (tripId) => () => {
   const tokenJSON = localStorage.getItem('token');
   const token = JSON.parse(tokenJSON);
+  console.log('token', token);
+  console.log('trip id', tripId);
   if (token){
+    console.log("if")
     const myHeaders = new Headers({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${ token }`

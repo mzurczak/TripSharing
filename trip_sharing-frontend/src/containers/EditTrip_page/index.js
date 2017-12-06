@@ -21,7 +21,14 @@ class EditUser extends Component {
 
   constructor () {
     super();
-    this.state = {}
+
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear());
+    minDate.setHours(0, 0, 0, 0);
+
+    this.state = {
+      minDate,
+    };
   }
 
   handleNameChange = (e) => {
@@ -40,40 +47,45 @@ class EditUser extends Component {
     let moment = new Moment(date);
     let startDate = moment.format('DD/MM/YYYY')
     this.setState({
+      minDate: moment,
       startDate
     });
   }
-
+  
   handleEndDate = (event, date) => {
     let moment = new Moment(date);
     let endDate = moment.format('DD/MM/YYYY')
     this.setState({
+      maxDate: moment,
       endDate
     })
   }
-
+  
   handleEdit = (e) => {
     e.preventDefault();
     let newTrip = { ...this.state }
     newTrip.id = this.props.match.params.tripId;
     this.props.dispatch(fetchEditTrip(newTrip))
-      .then(() => {
+    .then(() => {
         this.setState({})
         this.props.history.push(`/trips/${newTrip.id}`)
-      });
+    });
   }
-  
+    
   handleDelete = (e) => {
     e.preventDefault();
     let tripId = this.props.match.params.tripId;
     this.props.dispatch(fetchDeleteTrip(tripId))
-      .then(() => {
-        this.props.history.push("/")
-      });
+    .then(() => {
+      this.props.history.push("/")
+    });
   }
-  
+
+  disableDays = (date) => {
+    return date < this.state.minDate || date > this.state.maxDate
+  }
+
   render() {
-  
     const renderButtons = () => {
       return (
         <div>
@@ -91,31 +103,36 @@ class EditUser extends Component {
         <Header />
         <div className="Edit-body">
           <h2>Edit your trip </h2>
-          <form>
-            <TextField
-              hintText = "Name"
-              floatingLabelText = "Trip name"
-              defaultValue = { this.props.trip.name }
-              onChange = { this.handleNameChange }
-            /><br />
-            <TextField
-              hintText = "Description"
-              floatingLabelText = "Description"
-              defaultValue = { this.props.trip.description }
-              onChange = { this.handleDescriptionChange }
-            /><br />
-            <DatePicker
-              onChange = { this.handleStartDate }
-              floatingLabelText = "Start date"
-              // defaultDate = { this.props.trip.startDate }
-            /><br />
-            <DatePicker
-              onChange = { this.handleEndDate }
-              floatingLabelText = "End date"
-              // defaultDate = { this.props.trip.endDate }
-            /><br />
-            { renderButtons() }
-          </form>
+          {
+            (this.props.trip !== undefined)
+            ? 
+            (<form>
+              <TextField
+                hintText = { this.props.trip.name }
+                floatingLabelText = { this.props.trip.name }
+                defaultValue = { this.props.trip.name }
+                onChange = { this.handleNameChange }
+              /><br />
+              <TextField
+                hintText = "Description"
+                floatingLabelText = "Description"
+                defaultValue = { this.props.trip.description }
+                onChange = { this.handleDescriptionChange }
+              /><br />
+              <DatePicker
+                onChange = { this.handleStartDate }
+                floatingLabelText = "Start date"
+                shouldDisableDate={this.disableDays}
+              /><br />
+              <DatePicker
+                onChange = { this.handleEndDate }
+                floatingLabelText = "End date"
+                shouldDisableDate={this.disableDays}
+              /><br />
+              { renderButtons() }
+            </form>)
+            : ""
+          }
         </div>
       </div>
     )
@@ -125,7 +142,7 @@ class EditUser extends Component {
 const mapStateToProps = ( { tripsReducer } ) => {
 
   return({
-    trip: tripsReducer.trips
+    trip: Object.values(tripsReducer.trips)[0]
   })
 }
 export default connect(mapStateToProps)(withRouter(EditUser))
