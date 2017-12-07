@@ -77,7 +77,9 @@ public class DefaultTripService implements TripService {
 			User person = trip.getParticipants().get(0);
 			if (!participants.contains(person)) {
 				participants.add(person);
-				person.addTripAttended(trip);
+//				person.addTripAttended(trip);
+			} else {
+				participants.remove(person);
 			};
 			tripToUpdate.setParticipants(participants);
 		}

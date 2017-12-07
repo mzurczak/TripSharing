@@ -85,12 +85,16 @@ public class RestTripController {
 		User host = this.userService.findByUserName(jwtUtil.getUsernameFromToken(token));
 		String startDate = json.get("startDate");
 		String endDate = json.get("endDate");
+		String places = json.get("places");
+		String transportation = json.get("transportation");
+		String photo = json.get("photo");
+		String budget = json.get("budget");
 		
-		if ( title == null || description == null || host == null || startDate == null) {
+		if ( title == null || description == null || host == null ) {
 			return null;
 		}
 		
-		Trip newTrip = new Trip(title, description, host, startDate, endDate);
+		Trip newTrip = new Trip( title, description, host, startDate, endDate, photo, places, null, transportation, budget);
 		if (isAuthenticated(request, host.getId())) {
 			return this.tripService.saveTrip(newTrip);
 		}
@@ -100,7 +104,7 @@ public class RestTripController {
 	@PutMapping( "/{tripId}")
 	@JsonView( JsonViews.TripDetails.class )
 	public Trip editTrip( @RequestBody Map<String, String> json, @PathVariable String tripId, HttpServletRequest request) {
-		String name = json.get("name");
+		String title = json.get("title");
 		String description = json.get("description");
 		User host = this.tripService.findById(tripId).getHost();
 		String startDate = json.get("startDate");
@@ -108,9 +112,13 @@ public class RestTripController {
 		String photo = json.get("photo");
 		String newPlace = json.get("places");
 		String newParticipantId= json.get("participants");
-		User user = userService.findById(newParticipantId);
+		User user = null;
+		if (newParticipantId != null) {
+			user = userService.findById(newParticipantId);
+		}
 		String transportation = json.get("transportation");
-		Trip newTrip = new Trip(tripId, name, description, host, startDate, endDate, photo, newPlace, user, transportation);
+		String budget = json.get("budget");
+		Trip newTrip = new Trip(tripId, title, description, host, startDate, endDate, photo, newPlace, user, transportation, budget);
 		
 		if (isAuthenticated(request, host.getId())) {
 			return this.tripService.updateTrip(newTrip);

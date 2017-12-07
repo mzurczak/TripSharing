@@ -5,11 +5,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import ch.tripsharing.domain.Review;
+//import ch.tripsharing.domain.Review;
 import ch.tripsharing.domain.Role;
 import ch.tripsharing.domain.Trip;
 import ch.tripsharing.domain.User;
-import ch.tripsharing.repository.ReviewRepository;
+//import ch.tripsharing.repository.ReviewRepository;
 import ch.tripsharing.repository.RoleRepository;
 import ch.tripsharing.repository.TripRepository;
 import ch.tripsharing.service.UserService;
@@ -19,15 +19,14 @@ public class DatabaseLoader implements ApplicationRunner{
 
 	private UserService userService;
 	private TripRepository tripRepository;
-	private ReviewRepository reviewRepository;
+//	private ReviewRepository reviewRepository;
 	private RoleRepository roleRepository;
 	
 	@Autowired
-	public DatabaseLoader(UserService userService, TripRepository tripRepository,
-			ReviewRepository reviewRepository, RoleRepository roleRepository) {
+	public DatabaseLoader(UserService userService, TripRepository tripRepository, RoleRepository roleRepository) {
 		this.userService = userService;
 		this.tripRepository = tripRepository;
-		this.reviewRepository = reviewRepository;
+//		this.reviewRepository = reviewRepository;
 		this.roleRepository = roleRepository;
 	}
 	
@@ -44,9 +43,8 @@ public class DatabaseLoader implements ApplicationRunner{
 		}
 		
 		
-		User[] userArr = new User[11];
+		User[] userArr = new User[12];
 		userArr[0] = new User("mzurczak", "Michal", "Zurczak", "michal@mail.com", "zurczak");
-		userArr[0].addRole(ROLE_ADMIN);
 		userArr[1] = new User("llebovitz", "Lukas", "Lebovitz", "lukas@mail.com", "lebovitz");
 		userArr[2] = new User("jsavor", "Jeremy", "Savor", "jeremy@mail.com", "savor");
 		userArr[3] = new User("kbeyler", "Kim", "Beyeler", "kim@mail.com", "beyler");
@@ -57,6 +55,7 @@ public class DatabaseLoader implements ApplicationRunner{
 		userArr[8] = new User("lbohale", "Laz", "Bohale", "laz@mail.com", "bohale");
 		userArr[9] = new User("ppintaske", "Patric", "Pintaske", "patric@mail.com", "pintaske");
 		userArr[10] = new User("lhoxhaj", "Laurent", "Hoxhaj", "laurent@mail.com", "hoxhaj");
+		userArr[11] = new User("dzurczak", "Dominika", "Zurczak", "dominika@mail.com", "zurczak");
 		
 		for( User user: userArr) {
 			if (null == userService.findByUserName(user.getUsername())) {
@@ -64,34 +63,55 @@ public class DatabaseLoader implements ApplicationRunner{
 			}
 		}
 		
-		Trip[] tripArr = new Trip[3];
+		Trip[] tripArr = new Trip[4];
 		tripArr[0] = new Trip("Octoberfest adventure!", 
 				"Let's have fun on the most popular beer fest!",
 				userService.findByUserName("ppintaske"),
-				"2018-10-01", 
-				"2018-10-03" 
+				"01/10/2018", 
+				"03/10/2018",
+				"https://www.wombats-hostels.com/blog/wp-content/uploads/2015/09/M%C3%BCnchen_Sch%C3%BCtzen-Festzelt_Oktoberfest_2012_01.jpg",
+				"Monachium, Germany",
+				userService.findByUserName("gperdomo"),
+				"Train",
+				"100$"
 				);
-		
-		tripArr[0].addPlace("Monachium, Germany");
-		tripArr[0].addPhoto("https://www.wombats-hostels.com/blog/wp-content/uploads/2015/09/M%C3%BCnchen_Sch%C3%BCtzen-Festzelt_Oktoberfest_2012_01.jpg");
 		
 		tripArr[1] = new Trip("Carnaval in Rio!", 
 				"Experience the best carnaval in the whole world!",
 				userService.findByUserName("gperdomo"),
-				"2018-02-09", 
-				"2018-02-14"
+				"09/02/2018",
+				"14/02/2018",
+				"https://festivalsherpa-wpengine.netdna-ssl.com/wp-content/uploads/2016/01/theworldfestival-fest.jpg",
+				"Rio, Brasil",
+				userService.findByUserName("mzurczak"),
+				"Flight",
+				"800$"
 				);
-		tripArr[1].addPlace("Rio, Brasil");
-		tripArr[1].addPhoto("http://assets.nydailynews.com/polopoly_fs/1.16108.1313673232!/img/httpImage/image.jpg_gen/derivatives/gallery_1200/gal-brazil-carnival-13-jpg.jpg");
 		
 		tripArr[2] = new Trip("Explore New York", 
 				"We are looking for the people, that are dreaming of visiting the greatest city in the world!",
-				userService.findByUserName("ppintaske"),
-				"2019-04-03", 
-				"2019-04-03" 
+				userService.findByUserName("dzurczak"),
+				"25/05/2019", 
+				"14/06/2019",
+				"https://media.timeout.com/images/103444978/image.jpg",
+				"New York, USA",
+				userService.findByUserName("mzurczak"),
+				"Flight",
+				"1500$"
 				);
-		tripArr[2].addPlace("Rio, Brasil");
-		tripArr[2].addPhoto("http://assets.nydailynews.com/polopoly_fs/1.16108.1313673232!/img/httpImage/image.jpg_gen/derivatives/gallery_1200/gal-brazil-carnival-13-jpg.jpg");
+		
+		tripArr[3] = new Trip("Saas-fee ski paradise !",
+				"Hey people! The Alps are already snow-bound. That means this is the best time to go ski! We are looking for 8 people to complete the group and save money on the ski passes!",
+				userService.findByUserName("mzurczak"),
+				"2017-12-16",
+				"2017-12-17",
+				"http://res.cloudinary.com/ds57cmzxo/image/upload/f_auto,q_80/Webseite/Bildergalerie/skifahren-kreuzboden",
+				"Saas-fee, Switzerland",
+				null,
+				"train",
+				"60$"
+				);
+		
 		
 		for (Trip trip: tripArr) {
 			if (0 == tripRepository.findByName(trip.getName()).size()) {
@@ -100,23 +120,23 @@ public class DatabaseLoader implements ApplicationRunner{
 			}
 		}
 		
-		Review[] reviewsArr = new Review[2];
-		reviewsArr[0] = new Review(
-				userService.findByUserName("ppintaske"),
-				"This dude is crazy! So many great memories! Looking forward to next trips together!",
-				5,
-				userService.findByUserName("jsavor"));
-		reviewsArr[1] = new Review(
-				userService.findByUserName("jmuhlebach"),
-				"You will never be bored with her! Jokes, jokes everywhere!",
-				5,
-				userService.findByUserName("jsavina"));	
-		
-		for ( Review review : reviewsArr ) {
-			if ( null == reviewRepository.findById(review.getId())) {
-				reviewRepository.save(review);
-			}
-		}
+//		Review[] reviewsArr = new Review[2];
+//		reviewsArr[0] = new Review(
+//				userService.findByUserName("ppintaske"),
+//				"This dude is crazy! So many great memories! Looking forward to next trips together!",
+//				5,
+//				userService.findByUserName("jsavor"));
+//		reviewsArr[1] = new Review(
+//				userService.findByUserName("jmuhlebach"),
+//				"You will never be bored with her! Jokes, jokes everywhere!",
+//				5,
+//				userService.findByUserName("jsavina"));	
+//		
+//		for ( Review review : reviewsArr ) {
+//			if ( null == reviewRepository.findById(review.getId())) {
+//				reviewRepository.save(review);
+//			}
+//		}
 				
 	}
 

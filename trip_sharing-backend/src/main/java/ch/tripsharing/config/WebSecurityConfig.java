@@ -87,6 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.mvcMatchers(HttpMethod.POST, "/api/users/sign_in").permitAll()
 					.mvcMatchers(HttpMethod.POST, "/api/users/sign_up").permitAll()
 					.mvcMatchers(HttpMethod.POST, "/api/users/**/reviews/**").hasRole("USER")
+					.mvcMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("USER")
 					.mvcMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")//hasRole("USER")
 					.mvcMatchers("/api/users/**").hasRole("USER")
 					.and()
@@ -102,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.mvcMatchers(HttpMethod.GET, "/api/trips/**").permitAll()
 					.and()
 			
-			.mvcMatcher("/api/restaurant/**")
+			.mvcMatcher("/api/trips/**")
 				.authorizeRequests()
 					.mvcMatchers(HttpMethod.POST, "/api/trips/create").hasRole("USER")
 					.mvcMatchers(HttpMethod.PUT, "/api/trips/**").hasRole("USER")

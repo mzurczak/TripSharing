@@ -45,7 +45,7 @@ public class Trip {
 	@ManyToOne 
 	private User host;
 	
-	@Column( name = "start_date", length = 20, nullable = false )
+	@Column( name = "start_date", length = 20 )
 	@JsonView( JsonViews.Summary.class )
 	private String startDate;
 	
@@ -66,26 +66,28 @@ public class Trip {
 	private List<User> participants = new ArrayList<>();
 	
 	@Column
+	@JsonView( JsonViews.Summary.class )
 	private String transportation;
 	
-//	private Integer cost;
+	@JsonView( JsonViews.Summary.class )
+	private String budget;
 	
 	@PrePersist
 	public void onCreate() {
 		String uuid = UUID.randomUUID().toString();
 		setId(uuid);
 	}
-
-	public Trip(String id, String title, String description, User organizer, String startDate, String endDate) {
-		this.id = id;
-		this.name = title;
-		this.description = description;
-		this.host = organizer;
-		this.startDate = startDate;
-		this.endDate = endDate;
-	}
+//
+//	public Trip(String id, String title, String description, User organizer, String startDate, String endDate) {
+//		this.id = id;
+//		this.name = title;
+//		this.description = description;
+//		this.host = organizer;
+//		this.startDate = startDate;
+//		this.endDate = endDate;
+//	}
 	
-	public Trip(String id, String title, String description, User organizer, String startDate, String endDate, String photo, String place, User newParticipant, String transportation) {
+	public Trip(String id, String title, String description, User organizer, String startDate, String endDate, String photo, String place, User newParticipant, String transportation, String budget) {
 		this.id = id;
 		this.name = title;
 		this.description = description;
@@ -96,10 +98,11 @@ public class Trip {
 		this.places.add(place);
 		this.participants.add(newParticipant);
 		this.transportation = transportation;
+		this.budget = budget;
 	}
 	
-	public Trip(String title, String description, User organizer, String startDate, String endDate) {
-		this(null, title, description, organizer, startDate, endDate);
+	public Trip(String title, String description, User host, String startDate, String endDate, String photo, String place, User newParticipant, String transportation, String budget) {
+		this(null, title, description, host, startDate, endDate, photo, place, newParticipant, transportation, budget);
 	}
 	
 	public void addPlace(String place) {
