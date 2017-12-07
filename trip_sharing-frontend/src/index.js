@@ -10,6 +10,7 @@ import Store from './store';
 
 import './index.css';
 
+import CreateTripPage from './containers/CreateTrip_page'
 import EditTripPage from './containers/EditTrip_page'
 import Home from './components/Home_page';
 import SearchPage from './components/Search_page';
@@ -27,6 +28,7 @@ ReactDOM.render(
           <Route exact path = {'/'} component = { Home } />
           <Route exact path = {'/search/:searchTrip'} component = { SearchPage } />
           <Route exact path = {'/trips/:tripId'} component = { TripPage } />
+          <Route exact path = {'/trip/create'} component = { CreateTripPage } />
           <Route exact path = {'/trips/edit/:tripId'} component = { EditTripPage } />
           <Route exact path = {'/mytrips'} component = { UserTripsPage } />
         </Switch>

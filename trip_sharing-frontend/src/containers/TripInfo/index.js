@@ -4,80 +4,70 @@ import { withRouter } from 'react-router-dom'
 
 import './index.css'
 
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
-import { fetchEditTrip } from '../../utils/fetch_functions';
-
+import EditButton from '../../components/EditButton'
+import JoinButton from '../../components/JoinButton'
 
 class TripInfo extends Component {
 
-  handleJoinTrip = () => {
-    const user = { ...this.props.user}
-    const tripWithNewParticipant = { id: this.props.trip.id, participants: user.id };
-    console.log(JSON.stringify(tripWithNewParticipant));
-    this.props.dispatch(fetchEditTrip(tripWithNewParticipant))
+  renderButtons = () => {
+    if (localStorage.getItem('token')){
+      if( this.props.trip.host.username !== this.props.user.username) {
+        return <JoinButton trip = { this.props.trip} user = { this.props.user}/>
+      } else {
+        return <EditButton tripId = { this.props.trip.id} />
+      }
+    } 
   }
 
-  renderJoinButton = () => {
-    if (localStorage.getItem('token')){
-      return(
-        <FlatButton
-        style = {{backgroundColor: "Aquamarine", color: "black"}}
-        label="Join trip"
-        labelPosition="after"
-        primary={true}
-        icon={
-          <FontIcon className="material-icons" hoverColor = "white" style = {{cursor: "pointer"}}>add_circle</FontIcon>
-        }
-        onClick = { this.handleJoinTrip }
-        />
-      )
-    } else {
-      return ""
-    }
-  }
   render(){
-    console.log(this.props)
+    const { trip } = this.props;
     if ( this.props.trip !== undefined ) {
       return(
         <div className = "TripInfo-container">
-          { this.renderJoinButton()}
+          { this.renderButtons()}
           <div className = "TripInfo-description">
             <h2>Description: </h2>
             <p> { 
-              this.props.trip.description  
+              trip.description  
             }
             </p>
           </div>
           <div className = "TripInfo-glance">
             <h2>Trip at glance: </h2> 
             <ul>
-              <li> Date: {`${ this.props.trip.startDate} - ${ this.props.trip.endDate}`}</li> 
+              <li> Date: {`${ trip.startDate} - ${ trip.endDate}`}</li> 
               <li> Places: </li> 
                 <ul>
                   {
-                    this.props.trip.places.map( (place, index) => 
-                    (<li key = { index }> { place } </li>))
+                    (trip.places.length > 0 )
+                    ? trip.places.map( (place, index) => {
+                      if(place !==null){
+                        return (<li key = { index }> { place } </li>)
+                      }
+                      return ""
+                    } )
+                    : ""
                   }
                 </ul>
-              <li> {`Transportation: ${ 
-                (this.props.trip.transportation!==undefined)
-                ? this.props.trip.transportation
+              <li> Transportation: {`${ 
+                (trip.transportation!==undefined)
+                ? trip.transportation
                 : "-"  }`} </li> 
-              <li> Budget forecast: </li> 
+              <li> Budget forecast: { ` ${ 
+                (trip.budget!==undefined)
+                ? trip.budget
+                : "-"  }` }</li> 
             </ul> 
           </div>
           <div className = "TripInfo-participants">
             <h2>Participants: </h2> 
             <ul>
               {
-                // (this.props.trip.participants.length > 0)
-                // ? this.props.trip.participants.map( (user, index) => {
-                //   (user !== null)
-                //   ?(<li key = { index }> { user.username } </li>)
-                //   : "Be the first one and apply!"
-                // })
-                // : "Be the first one and apply!"
+                (trip.participants.length > 0 && trip.participants[0] !== null)
+                ? trip.participants.map( (user, index) => 
+                 { return (<li key = { index }> { user.username } </li>)}
+                )
+                : "Be the first one and apply!"
               }
             </ul> 
           </div>

@@ -1,14 +1,14 @@
-.Edit-body h2 {
+.Create-body h2 {
   width: 100%;
 }
 
-.Edit-body {
+.Create-body {
   width: 80%;
   margin: auto;
   margin-top: 30px;
 }
 
-.Edit-body form{
+.Create-body form{
   padding: 0 10px;
   clear: both;
   display: flex;

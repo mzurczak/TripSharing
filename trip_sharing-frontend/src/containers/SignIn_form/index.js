@@ -75,7 +75,7 @@ class SignInForm extends Component {
 
     return (
       <div className = "SignIn">
-        <form onSubmit = { this.handleSignIn }>
+        <form >
           <TextField
             floatingLabelText = "Username"
             onChange={ this.handleUsernameChange }

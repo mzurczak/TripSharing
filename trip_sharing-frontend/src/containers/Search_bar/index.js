@@ -88,6 +88,9 @@ const mapStateToProps = ( { tripsReducer }) => {
     for (let trip in  trips) {
       let newName = trips[trip].name.toLowerCase();
       tripNames.push(newName)
+      let newPlace = trips[trip].places.forEach(element => {
+        tripNames.push(element.toLowerCase())
+      });
     }
   } 
   return ({

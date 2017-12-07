@@ -13,6 +13,7 @@ class TripList extends Component {
   componentWillMount() {
     this.props.dispatch(fetchAllTrips());
   }
+  
   render() {
     return(
       <div className = "TripList">

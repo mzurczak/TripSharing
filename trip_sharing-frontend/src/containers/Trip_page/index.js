@@ -17,7 +17,6 @@ class TripPage extends Component {
   render(){
     const { trip } = this.props;
     if(trip.length > 0){
-      console.log('Trip page', trip)
       return(
         <div>
           <Header />

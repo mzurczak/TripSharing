@@ -11,14 +11,10 @@ import TextField from 'material-ui/TextField';
 import './index.css'
 
 import Header from '../Header';
-import { fetchSpecificTrip, fetchEditTrip, fetchDeleteTrip } from '../../utils/fetch_functions';
+import { fetchCreateTrip } from '../../utils/fetch_functions';
 
-class EditTrip extends Component {
+class CreateTrip extends Component {
   
-  componentDidMount() {
-    this.props.dispatch(fetchSpecificTrip(this.props.match.params.tripId))
-  }
-
   constructor () {
     super();
 
@@ -27,11 +23,14 @@ class EditTrip extends Component {
     minDate.setHours(0, 0, 0, 0);
 
     this.state = {
+      title: null,
+      description: null,
+      
       minDate,
     };
   }
 
-  handleTitleChange = (e) => {
+  handleNameChange = (e) => {
     this.setState({
       title: e.currentTarget.value,
     })
@@ -60,7 +59,7 @@ class EditTrip extends Component {
       endDate
     })
   }
-
+  
   handlePlacesChange = (e) => {
     this.setState({
       places: e.currentTarget.value,
@@ -84,60 +83,45 @@ class EditTrip extends Component {
       budget: e.currentTarget.value,
     })
   }
-  
-  handleEdit = (e) => {
+
+  handleCreate = (e) => {
     e.preventDefault();
     let newTrip = { ...this.state }
-    newTrip.id = this.props.match.params.tripId;
-    this.props.dispatch(fetchEditTrip(newTrip))
+    this.props.dispatch(fetchCreateTrip(newTrip))
     .then(() => {
         this.setState({})
-        this.props.history.push(`/trips/${newTrip.id}`)
+        this.props.history.push(`/mytrips`)
     });
   }
     
-  handleDelete = (e) => {
-    e.preventDefault();
-    let tripId = this.props.match.params.tripId;
-    this.props.dispatch(fetchDeleteTrip(tripId))
-    .then(() => {
-      this.props.history.push("/")
-    });
-  }
-
   disableDays = (date) => {
     return date < this.state.minDate || date > this.state.maxDate
   }
 
   render() {
     const renderButtons = () => {
-      return (
-        <div>
-          <IconButton onClick = { this.handleEdit } >
-            <FontIcon className="material-icons" style = {{cursor: "pointer"}}>save</FontIcon>
-          </IconButton>
-          <IconButton onClick = { this.handleDelete } >
-            <FontIcon className="material-icons" hoverColor = "red" style = {{cursor: "pointer"}}>delete</FontIcon>
-          </IconButton>
-        </div>
-      )
+      if (this.state.title !== null && this.state.description !== null){
+        return (
+          <div>
+            <IconButton onClick = { this.handleCreate } >
+              <FontIcon className="material-icons" style = {{cursor: "pointer"}}>save</FontIcon>
+            </IconButton>
+          </div>
+        )
+      }
     }
     return (
       <div>
         <Header />
-        <div className="Edit-body">
-          <h2>Edit your trip </h2>
+        <div className="Create-body">
+          <h2>Create your trip </h2>
           {
-            (this.props.trip !== undefined)
-            ? 
-            (<form>
+            <form>
               <TextField
-                hintText = "Title"
-                floatingLabelText = { this.props.trip.name }
-                onChange = { this.handleTitleChange }
+                floatingLabelText = "Name"
+                onChange = { this.handleNameChange }
               /><br />
               <TextField
-                hintText = "Description"
                 fullWidth = { true }
                 floatingLabelText = "Description"
                 onChange = { this.handleDescriptionChange }
@@ -152,7 +136,7 @@ class EditTrip extends Component {
                 floatingLabelText = "End date"
                 shouldDisableDate={this.disableDays}
               /><br />
-               <TextField
+              <TextField
                 floatingLabelText = "Places"
                 onChange = { this.handlePlacesChange }
               /><br />
@@ -169,8 +153,7 @@ class EditTrip extends Component {
                 onChange = { this.handleBudgetChange }
               /><br />
               { renderButtons() }
-            </form>)
-            : ""
+            </form>
           }
         </div>
       </div>
@@ -178,10 +161,10 @@ class EditTrip extends Component {
   }
 }
 
-const mapStateToProps = ( { tripsReducer }, props ) => {
-  const trip = Object.values(tripsReducer.trips).filter(trip => trip.id === props.match.params.tripId)
-  return({
-    trip
-  })
-}
-export default connect(mapStateToProps)(withRouter(EditTrip))
+// const mapStateToProps = ( { tripsReducer }, props ) => {
+//   const trip = Object.values(tripsReducer.trips).filter(trip => trip.id === props.match.params.tripId)
+//   return({
+//     trip
+//   })
+// }
+export default connect()(withRouter(CreateTrip))

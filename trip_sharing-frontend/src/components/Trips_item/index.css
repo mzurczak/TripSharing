@@ -3,3 +3,7 @@
   height: 450;
   overflow-y: 'auto';
 }
+
+.TripList-gridList img{
+  height: 100%;
+}

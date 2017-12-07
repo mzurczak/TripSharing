@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import logo from '../../resources/palm-tree-silhouette-dT7g5MnT9.svg'
 
 import './index.css'
 
 import { GridTile } from 'material-ui/GridList';
-import IconButton from 'material-ui/IconButton';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+// import IconButton from 'material-ui/IconButton';
+// import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 
 class TripItem extends Component {
 
@@ -15,6 +16,14 @@ class TripItem extends Component {
 
   render() {
     const { trip } = this.props;
+    const renderPhoto = () => {
+      if (trip.photo === null) {
+        return <img src = { logo } alt = "eventPhoto"/>
+      } else {
+        return <img src = { trip.photo } alt = "eventPhoto"/>
+      }
+    }
+
     return(
       <GridTile
         title = { trip.name }
@@ -22,10 +31,10 @@ class TripItem extends Component {
           (trip.host !== undefined ) 
           ? trip.host.username 
           : "Loading..."} </b></span>}
-        actionIcon = { <IconButton><StarBorder color="white" /></IconButton> }
+        // actionIcon = { <IconButton><StarBorder color="white" /></IconButton> }
         onClick = { this.handleGoToTrip }
       >
-        <img src = { trip.photo } alt = "eventPhoto"/>
+        { renderPhoto() }
       </GridTile>
     )
   }
