@@ -1,6 +1,5 @@
 # TripSharing
 
-## About
 TripSharing is my final project of the Propulsion Academy bootcamp. The idea of this app is to enable users to create, manage and share the trips that they already made or are willing to do.
 
 ## Features
