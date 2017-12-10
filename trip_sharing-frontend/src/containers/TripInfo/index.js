@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+import Moment from 'moment';
 
 import './index.css'
 
 import EditButton from '../../components/EditButton'
 import JoinButton from '../../components/JoinButton'
+import MapContainer from '../MapContainer'
 
 class TripInfo extends Component {
 
   renderButtons = () => {
-    if (localStorage.getItem('token')){
+    if (this.props.user !== undefined && this.props.trip !== undefined){
       if( this.props.trip.host.username !== this.props.user.username) {
         return <JoinButton trip = { this.props.trip} user = { this.props.user}/>
       } else {
@@ -19,9 +21,15 @@ class TripInfo extends Component {
     } 
   }
 
+  dateFormatter = (dateToFormat) => {
+    let dateFormatted = new Moment(dateToFormat).format('LL');
+    return dateFormatted;
+  }
   render(){
     const { trip } = this.props;
+    
     if ( this.props.trip !== undefined ) {
+      console.log(trip.participants) 
       return(
         <div className = "TripInfo-container">
           { this.renderButtons()}
@@ -35,7 +43,21 @@ class TripInfo extends Component {
           <div className = "TripInfo-glance">
             <h2>Trip at glance: </h2> 
             <ul>
-              <li> Date: {`${ trip.startDate} - ${ trip.endDate}`}</li> 
+              <li> Date: {
+                <ul>
+                  <li> Start: { 
+                    (trip.startDate === null) 
+                    ? "Not defined yet" 
+                    : this.dateFormatter(trip.startDate) }
+                  </li>
+                  <li> End: {
+                    (trip.endDate === null) 
+                    ? "Not defined yet" 
+                    : this.dateFormatter(trip.endDate) }
+                  </li> 
+                </ul>
+              }
+              </li>
               <li> Places: </li> 
                 <ul>
                   {
@@ -50,11 +72,11 @@ class TripInfo extends Component {
                   }
                 </ul>
               <li> Transportation: {`${ 
-                (trip.transportation!==undefined)
+                (trip.transportation!==undefined && trip.transportation!==null)
                 ? trip.transportation
                 : "-"  }`} </li> 
               <li> Budget forecast: { ` ${ 
-                (trip.budget!==undefined)
+                (trip.budget!==undefined && trip.budget!==null)
                 ? trip.budget
                 : "-"  }` }</li> 
             </ul> 
@@ -63,13 +85,17 @@ class TripInfo extends Component {
             <h2>Participants: </h2> 
             <ul>
               {
-                (trip.participants.length > 0 && trip.participants[0] !== null)
+                
+                (trip.participants.length > 0 )
                 ? trip.participants.map( (user, index) => 
-                 { return (<li key = { index }> { user.username } </li>)}
+                 { if (user!==null) return (<li key = { index }> { user.username } </li>)}
                 )
                 : "Be the first one and apply!"
               }
             </ul> 
+          </div>
+          <div className = "TripInfo-map">
+            <MapContainer passedPlaces = { trip.places }/>
           </div>
         </div>
       )

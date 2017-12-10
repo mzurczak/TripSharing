@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Header from '../../containers/Header'
+import Header from '../Header'
 import Banner from '../Banner';
 import TripsList from '../../containers/Trips_list'
 

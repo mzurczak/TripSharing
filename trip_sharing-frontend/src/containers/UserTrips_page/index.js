@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import './index.css'
 
-import Header from '../../containers/Header';
+import Header from '../../components/Header';
 import SearchList from '../../components/SearchList';
 import { fetchAllTrips } from '../../utils/fetch_functions';
 

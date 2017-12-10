@@ -13,7 +13,7 @@ import './index.css';
 import CreateTripPage from './containers/CreateTrip_page'
 import EditTripPage from './containers/EditTrip_page'
 import Home from './components/Home_page';
-import SearchPage from './components/Search_page';
+import SearchPage from './containers/Search_page';
 import TripPage from './containers/Trip_page';
 import UserTripsPage from './containers/UserTrips_page'
 import { fetchUser } from './utils/fetch_functions';

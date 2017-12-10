@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import './index.css';
 
-import FontIcon from 'material-ui/FontIcon';
+import SignIn from 'material-ui/svg-icons/action/input'
+import SignUp from 'material-ui/svg-icons/social/person-add'
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 import SignUpForm from '../SignUp_form';
@@ -36,7 +37,7 @@ export default class UserActionButtons_unlogged extends Component {
           onChange={this.handleChange}
         >
           <Tab 
-            icon={<FontIcon className="material-icons" style={{color: 'black'}}>input</FontIcon>}
+            icon={<SignIn style={{color: 'black'}} />}
             label="Sign in"
             style={{color: 'black'}}
             value="Sign in">
@@ -44,7 +45,7 @@ export default class UserActionButtons_unlogged extends Component {
               <SignInForm />
           </Tab>
           <Tab label= "Sign Up" 
-            icon={<FontIcon className="material-icons" style={{color: 'black'}}>person_add</FontIcon>}
+            icon={<SignUp style={{color: 'black'}}/>}
             value="Sign up"
             style={{color: 'black'}}
           >

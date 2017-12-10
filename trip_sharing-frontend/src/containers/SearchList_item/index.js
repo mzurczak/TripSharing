@@ -6,6 +6,7 @@ import './index.css';
 
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
+import Create from 'material-ui/svg-icons/content/create'
 
 import TripItem from '../../components/Trips_item';
 
@@ -22,7 +23,7 @@ class SearchListItem extends Component {
       if (user.username === trip.host.username) {
         return (
           <IconButton style = {{ color: "black"}} onClick = { this.handleEditTrip }>
-            <FontIcon className="material-icons" style = {{cursor: "pointer"}}>create</FontIcon>
+            <FontIcon className="material-icons" style = {{cursor: "pointer"}}><Create /></FontIcon>
           </IconButton>)
       }
     }

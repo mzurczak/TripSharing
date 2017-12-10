@@ -3,32 +3,85 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Moment from 'moment'
 
+import AddPlace from 'material-ui/svg-icons/maps/add-location';
 import DatePicker from 'material-ui/DatePicker';
-import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
+import Delete from 'material-ui/svg-icons/action/delete';
+import FlatButton from 'material-ui/FlatButton';
+import {List, ListItem} from 'material-ui/List';
+import RemovePlace from 'material-ui/svg-icons/navigation/cancel'
+import Save from 'material-ui/svg-icons/content/save';
 import TextField from 'material-ui/TextField';
 
 import './index.css'
 
-import Header from '../Header';
+import Header from '../../components/Header';
 import { fetchSpecificTrip, fetchEditTrip, fetchDeleteTrip } from '../../utils/fetch_functions';
 
 class EditTrip extends Component {
   
-  componentDidMount() {
-    this.props.dispatch(fetchSpecificTrip(this.props.match.params.tripId))
-  }
-
   constructor () {
     super();
-
+    
+    const currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear());
+    currentDate.setHours(0, 0, 0, 0);
     const minDate = new Date();
     minDate.setFullYear(minDate.getFullYear());
     minDate.setHours(0, 0, 0, 0);
-
+    
     this.state = {
+      title: null,
+      description: null,
+      startDate: null,
+      endDate: null,
+      places: [],
+      participants: null,
+      newPlace: '',
+      transportation: null,
+      photo: null,
+      budget: null,
+      currentPlaces: [],
+      currentDate,
       minDate,
     };
+  }
+  
+  componentDidMount() {
+    this.props.dispatch(fetchSpecificTrip(this.props.match.params.tripId))
+      .then(this.handleDateLoad())
+      .then(()=>{
+        if (this.props.trip !== undefined){
+          let arrayOfPlaces = [];
+          this.props.trip.places.forEach(place => {
+            arrayOfPlaces.push(place)
+          })
+          this.setState({
+            currentPlaces: arrayOfPlaces
+          })
+        }
+      })
+  }
+
+  handleDateLoad = () => {
+    if (this.props.trip === undefined ) {
+      return true;
+    }
+    
+    if (this.props.trip.startDate !== null){
+      const startDate = this.props.trip.startDate;
+      let moment = new Moment(startDate);
+      this.setState({
+        minDate: moment._d
+      });
+    }
+
+    if (this.props.trip.endDate !== null){
+      const endDate = this.props.trip.endDate;
+      let moment = new Moment(endDate);
+      this.setState({
+        maxDate: moment._d
+      })
+    }
   }
 
   handleTitleChange = (e) => {
@@ -45,25 +98,56 @@ class EditTrip extends Component {
 
   handleStartDate = (event, date) => {
     let moment = new Moment(date);
-    let startDate = moment.format('DD/MM/YYYY')
+    let startDate = moment.format('MM/DD/YYYY')
     this.setState({
-      minDate: moment,
+      minDate: date,
       startDate
     });
   }
   
   handleEndDate = (event, date) => {
     let moment = new Moment(date);
-    let endDate = moment.format('DD/MM/YYYY')
+    let endDate = moment.format('MM/DD/YYYY')
     this.setState({
-      maxDate: moment,
+      maxDate: date,
       endDate
     })
   }
 
   handlePlacesChange = (e) => {
     this.setState({
-      places: e.currentTarget.value,
+      newPlace: e.currentTarget.value,
+    })
+  }
+
+  handlePlacesRemove = (e) => {
+    console.log(e)
+    let newPlacesToChange = [...this.state.places];
+    let newCurrentPlaces = [...this.state.currentPlaces]
+    // if(!newPlacesToChange.includes(place)){
+    //   newPlacesToChange.push(place)
+    // } else {
+    //   newPlacesToChange = newPlacesToChange.filter( placeFromArray => placeFromArray !== place)
+    // }
+    // newCurrentPlaces = newCurrentPlaces.filter(placeFromState => placeFromState !== place) 
+    // this.setState({
+    //   currentPlaces: newCurrentPlaces,
+    //   places: newPlacesToChange,
+    // })
+  }
+
+  handleAddPlace = () => {
+    let newPlacesToChange = this.state.places;
+    let newCurrentPlaces = [...this.state.currentPlaces];
+    let place = this.state.newPlace;
+    if(!newPlacesToChange.includes(place)){
+      newPlacesToChange.push(place);
+      newCurrentPlaces.push(place)
+    } 
+    this.setState({
+      newPlace: '',
+      currentPlaces: newCurrentPlaces,
+      places: newPlacesToChange,
     })
   }
  
@@ -87,13 +171,21 @@ class EditTrip extends Component {
   
   handleEdit = (e) => {
     e.preventDefault();
-    let newTrip = { ...this.state }
+    let newTrip = { 
+      name: this.state.title,
+      description: this.state.description,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      places: this.state.places,
+      participants: this.state.participants,
+      transportation: this.state.transportation, 
+      photo: this.state.photo, 
+      budget: this.state.budget 
+    }
+
     newTrip.id = this.props.match.params.tripId;
     this.props.dispatch(fetchEditTrip(newTrip))
-    .then(() => {
-        this.setState({})
-        this.props.history.push(`/trips/${newTrip.id}`)
-    });
+    .then(this.props.history.push(`/trips/${newTrip.id}`));
   }
     
   handleDelete = (e) => {
@@ -105,83 +197,129 @@ class EditTrip extends Component {
     });
   }
 
-  disableDays = (date) => {
-    return date < this.state.minDate || date > this.state.maxDate
+  disableStartDays = (date) => {
+    return date < this.state.currentDate || date > this.state.maxDate
+  }
+    
+  disableEndDays = (date) => {
+    return date < this.state.minDate
   }
 
   render() {
     const renderButtons = () => {
       return (
-        <div>
-          <IconButton onClick = { this.handleEdit } >
-            <FontIcon className="material-icons" style = {{cursor: "pointer"}}>save</FontIcon>
-          </IconButton>
-          <IconButton onClick = { this.handleDelete } >
-            <FontIcon className="material-icons" hoverColor = "red" style = {{cursor: "pointer"}}>delete</FontIcon>
-          </IconButton>
+        <div className="Edit-buttons">
+          <FlatButton 
+            onClick = { this.handleEdit }
+            style = {{backgroundColor: "Aquamarine", color: "black"}}
+            label="Edit trip"
+            labelPosition="after"
+            primary={true}
+            icon = { <Save  className="material-icons" style = {{cursor: "pointer"}} /> } 
+          />
+          <FlatButton 
+            onClick = { this.handleDelete }
+            style = { {backgroundColor: "Aquamarine", color: "black"} }
+            label = "Delete trip"
+            labelPosition = "after"
+            primary = { true }
+            icon = { <Delete  className = "material-icons" hoverColor = "red" style = { {cursor: "pointer"} } /> }
+          />
         </div>
       )
     }
+
+    const { trip } = this.props;
+    
     return (
       <div>
         <Header />
-        <div className="Edit-body">
-          <h2>Edit your trip </h2>
-          {
-            (this.props.trip !== undefined)
-            ? 
-            (<form>
-              <TextField
-                hintText = "Title"
-                floatingLabelText = { this.props.trip.name }
-                onChange = { this.handleTitleChange }
-              /><br />
-              <TextField
-                hintText = "Description"
-                fullWidth = { true }
-                floatingLabelText = "Description"
-                onChange = { this.handleDescriptionChange }
-              /><br />
-              <DatePicker
-                onChange = { this.handleStartDate }
-                floatingLabelText = "Start date"
-                shouldDisableDate={this.disableDays}
-              /><br />
-              <DatePicker
-                onChange = { this.handleEndDate }
-                floatingLabelText = "End date"
-                shouldDisableDate={this.disableDays}
-              /><br />
-               <TextField
-                floatingLabelText = "Places"
-                onChange = { this.handlePlacesChange }
-              /><br />
-              <TextField
-                floatingLabelText = "Transportation"
-                onChange = { this.handleTransportationChange }
-              /><br />
-              <TextField
-                floatingLabelText = "Photo URL"
-                onChange = { this.handlePhotoChange }
-              /><br />
-              <TextField
-                floatingLabelText = "Budget"
-                onChange = { this.handleBudgetChange }
-              /><br />
-              { renderButtons() }
-            </form>)
-            : ""
-          }
-        </div>
+        {
+          (trip !== undefined)
+          ? (<div className="Edit-body">
+            <h2>Edit your trip </h2>
+            {<div>
+              <form>
+                <TextField
+                  hintText = "Title"
+                  floatingLabelText = { trip.name }
+                  onChange = { this.handleTitleChange }
+                  /><br />
+                <div>
+                <DatePicker
+                  onChange = { this.handleStartDate }
+                  floatingLabelText = "Start date"
+                  autoOk = { true }
+                  shouldDisableDate={this.disableStartDays}
+                /><br />
+                <DatePicker
+                  onChange = { this.handleEndDate }
+                  floatingLabelText = "End date"
+                  autoOk = { true }
+                  shouldDisableDate={this.disableEndDays}
+                /><br />
+                </div>
+                <TextField
+                  fullWidth = { true }
+                  multiLine= { true }
+                  rows= { 5 }
+                  floatingLabelText = "Description"
+                  onChange = { this.handleDescriptionChange }
+                  /><br />
+                <div className = "Edit-places">
+                <TextField
+                  floatingLabelText = "Places"
+                  defaultValue = { this.state.newPlace }
+                  onChange = { this.handlePlacesChange } />
+                   <AddPlace 
+                    style = {{height: '35px', margin: "right", cursor: "pointer"}}
+                    onClick = { this.handleAddPlace } />
+                  <List>
+                  {
+                    this.state.currentPlaces.map( (place, index) => {
+                      return <ListItem primaryText={ place } rightIcon={<RemovePlace />} onClick = { this.handlePlacesRemove } key = { index }/>
+                    })
+                  }
+                  </List>
+                  <br />
+                </div>
+                <div>
+                <TextField
+                  floatingLabelText = "Transportation"
+                  onChange = { this.handleTransportationChange }
+                  /><br />
+                <TextField
+                  floatingLabelText = "Photo URL"
+                  onChange = { this.handlePhotoChange }
+                  /><br />
+                <TextField
+                  floatingLabelText = "Budget"
+                  onChange = { this.handleBudgetChange }
+                  /><br />
+                </div>
+              </form>
+                { renderButtons() }
+              </div>
+            }
+            </div>)
+            : "Loadin form for this trip..."
+      }
       </div>
     )
   }
 }
 
 const mapStateToProps = ( { tripsReducer }, props ) => {
-  const trip = Object.values(tripsReducer.trips).filter(trip => trip.id === props.match.params.tripId)
+  const trip = Object.values(tripsReducer.trips).filter(trip => trip.id === props.match.params.tripId)[0]
+  let arrayOfPlaces = [];
+  if (trip !== undefined){
+    trip.places.forEach(place => {
+      arrayOfPlaces.push(place)
+    })
+  }
   return({
-    trip
+    trip,
+    // currentPlaces: arrayOfPlaces
   })
 }
 export default connect(mapStateToProps)(withRouter(EditTrip))

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import './index.css'
 
-import Header from '../../containers/Header'
-import SearchList from '../SearchList'
+import Header from '../../components/Header'
+import SearchList from '../../components/SearchList'
 import { fetchSearching } from '../../utils/fetch_functions';
 
 

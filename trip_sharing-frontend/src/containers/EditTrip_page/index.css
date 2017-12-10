@@ -4,8 +4,8 @@
 
 .Edit-body {
   width: 80%;
-  margin: auto;
-  margin-top: 30px;
+  margin: 30px auto;
+
 }
 
 .Edit-body form{
@@ -15,4 +15,11 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap
+}
+
+.Edit-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 50px;
+  padding: 0 100px
 }

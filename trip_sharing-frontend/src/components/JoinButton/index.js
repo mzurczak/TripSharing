@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
+import Remove from 'material-ui/svg-icons/content/remove-circle-outline'
+import Add from 'material-ui/svg-icons/content/add-circle-outline'
 import { fetchEditTrip } from '../../utils/fetch_functions';
 
-class EditButton extends Component {
+class JoinButton extends Component {
   
   handleJoinTrip = () => {
-    const tripWithNewParticipant = { id: this.props.trip.id, participants: this.props.user.id };
+    const tripWithNewParticipant = { id: this.props.trip.id, participants: [this.props.user] };
     this.props.dispatch(fetchEditTrip(tripWithNewParticipant))
   }
 
@@ -20,7 +21,6 @@ class EditButton extends Component {
   }
   
   render(){
-    console.log(this.props);
     return (
       <FlatButton
         style = { {backgroundColor: "Aquamarine", color: "black"} }
@@ -32,17 +32,13 @@ class EditButton extends Component {
         labelPosition = "after"
         primary = { true }
         icon = {
-          <FontIcon className="material-icons" hoverColor = "white" style = {{cursor: "pointer"}}>
-          {
             (this.checkParticipation())
-            ? 'remove_circle_outline'
-            : 'add_circle_outline'
+            ? <Remove hoverColor = "white" style = {{cursor: "pointer"}} />
+            : <Add hoverColor = "white" style = {{cursor: "pointer"}} />
           }
-          </FontIcon>
-        }
         onClick = { this.handleJoinTrip }
       />)
   }
 }
 
-export default connect()(withRouter(EditButton))
+export default connect()(withRouter(JoinButton))

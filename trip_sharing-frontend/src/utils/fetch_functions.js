@@ -1,4 +1,4 @@
-import { addToken, addUser, addTrips } from "../store/actions_creators"
+import { addToken, addUser, addTrips, addCoordinates } from "../store/actions_creators"
 
 /***************************************
  * 
@@ -146,17 +146,16 @@ export const fetchEditTrip = (trip) => (dispatch) => {
   const tokenJSON = localStorage.getItem('token');
   const token = JSON.parse(tokenJSON);
   if (token){
-    const myHeaders = new Headers({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${ token }`
-    });
+      const myHeaders = new Headers({
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${ token }`
+        });
 
     const config = {
       method: "PUT",
       headers: myHeaders,
       body: JSON.stringify(trip)
     }
-
     const url = `http://localhost:8080/api/trips/${trip.id}`
     return fetch(url, config)
       .then(res => res.json())
@@ -182,12 +181,11 @@ export const fetchCreateTrip = (trip) => (dispatch) => {
       headers: myHeaders,
       body: JSON.stringify(trip)
     }
-    console.log(config.body);
+    console.log(trip)
     const url = `http://localhost:8080/api/trips/create`
     return fetch(url, config)
     .then(res => res.json())
     .then(data => {
-      console.log(data);
         const trips = {}
         trips[data.id] = {...data};
         dispatch(addTrips(trips));
@@ -211,4 +209,15 @@ export const fetchDeleteTrip = (tripId) => () => {
     const url = `http://localhost:8080/api/trips/${tripId}`
     return fetch(url, config);
   }
+}
+
+export const fetchCoordinates = (address) => (dispatch) =>{
+  const apiKey = 'AIzaSyAtZmX6xZzKxK8oYR1LyJT8CexxG4-m0sA'
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      const coordinates = data.results[0].geometry.location;
+      dispatch(addCoordinates(coordinates))
+  })
 }

@@ -17,3 +17,8 @@ export const addTrips = (data) => ({
   type: 'addTrips',
   trips: data
 })
+
+export const addCoordinates = (data) => ({
+  type: 'addCoordinates',
+  coordinates: data
+})

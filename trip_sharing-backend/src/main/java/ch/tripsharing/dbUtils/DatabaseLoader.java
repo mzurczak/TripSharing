@@ -70,7 +70,7 @@ public class DatabaseLoader implements ApplicationRunner{
 				"01/10/2018", 
 				"03/10/2018",
 				"https://www.wombats-hostels.com/blog/wp-content/uploads/2015/09/M%C3%BCnchen_Sch%C3%BCtzen-Festzelt_Oktoberfest_2012_01.jpg",
-				"Monachium, Germany",
+				null,
 				userService.findByUserName("gperdomo"),
 				"Train",
 				"100$"
@@ -82,7 +82,7 @@ public class DatabaseLoader implements ApplicationRunner{
 				"09/02/2018",
 				"14/02/2018",
 				"https://festivalsherpa-wpengine.netdna-ssl.com/wp-content/uploads/2016/01/theworldfestival-fest.jpg",
-				"Rio, Brasil",
+				null,
 				userService.findByUserName("mzurczak"),
 				"Flight",
 				"800$"
@@ -94,7 +94,7 @@ public class DatabaseLoader implements ApplicationRunner{
 				"25/05/2019", 
 				"14/06/2019",
 				"https://media.timeout.com/images/103444978/image.jpg",
-				"New York, USA",
+				null,
 				userService.findByUserName("mzurczak"),
 				"Flight",
 				"1500$"
@@ -106,7 +106,7 @@ public class DatabaseLoader implements ApplicationRunner{
 				"2017-12-16",
 				"2017-12-17",
 				"http://res.cloudinary.com/ds57cmzxo/image/upload/f_auto,q_80/Webseite/Bildergalerie/skifahren-kreuzboden",
-				"Saas-fee, Switzerland",
+				null,
 				null,
 				"train",
 				"60$"

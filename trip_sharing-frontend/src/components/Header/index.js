@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 
 import './index.css';
 import logo from '../../resources/palm-tree-silhouette-dT7g5MnT9.svg'
-import UserActionContainer from '../../containers/UserActionContainer';
+import UserActionMenu from '../UserActionMenu';
 
 class Header extends Component {
 
@@ -15,7 +15,7 @@ class Header extends Component {
     return (
       <div className = 'Header' >
         <img onClick = { this.handleHomePage } id = 'logo' src={logo} alt="logo" />
-        <UserActionContainer />
+        <UserActionMenu />
       </div>
     )
   }

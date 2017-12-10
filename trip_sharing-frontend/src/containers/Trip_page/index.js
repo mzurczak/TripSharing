@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import './index.css';
-import Header from '../../containers/Header';
+import Header from '../../components/Header';
 import CoverPhoto from '../../components/Trip_CoverPhoto';
 import TripInfo from '../../containers/TripInfo'
 
@@ -16,17 +16,15 @@ class TripPage extends Component {
   
   render(){
     const { trip } = this.props;
-    if(trip.length > 0){
+    if(trip !== undefined){
       return(
         <div>
           <Header />
           <CoverPhoto 
-            photoUrl = {trip[0].photo } 
-            name = { trip[0].name }
-            host = { trip[0].host.username }
+            coverPhotoData = { trip }
           />
           <div className = "TripPage-body">
-            <TripInfo trip = { trip[0] }/>
+            <TripInfo trip = { trip }/>
           </div>
         </div>
       )
@@ -36,9 +34,11 @@ class TripPage extends Component {
   }
 }
 
-const mapStateToProps = ( {tripsReducer} ) => {
+const mapStateToProps = ( {tripsReducer}, props ) => {
+  const tripId = props.match.params.tripId;
+  const trip = Object.values(tripsReducer.trips).filter( trip => trip.id === tripId )[0]
   return ({
-    trip: Object.values(tripsReducer.trips)
+    trip 
   })
 }
 

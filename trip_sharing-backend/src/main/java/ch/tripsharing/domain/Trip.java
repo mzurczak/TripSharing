@@ -87,7 +87,7 @@ public class Trip {
 //		this.endDate = endDate;
 //	}
 	
-	public Trip(String id, String title, String description, User organizer, String startDate, String endDate, String photo, String place, User newParticipant, String transportation, String budget) {
+	public Trip(String id, String title, String description, User organizer, String startDate, String endDate, String photo, List<String> places, User newParticipant, String transportation, String budget) {
 		this.id = id;
 		this.name = title;
 		this.description = description;
@@ -95,13 +95,13 @@ public class Trip {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.photo = photo;
-		this.places.add(place);
+		this.places = places;
 		this.participants.add(newParticipant);
 		this.transportation = transportation;
 		this.budget = budget;
 	}
 	
-	public Trip(String title, String description, User host, String startDate, String endDate, String photo, String place, User newParticipant, String transportation, String budget) {
+	public Trip(String title, String description, User host, String startDate, String endDate, String photo, List<String> place, User newParticipant, String transportation, String budget) {
 		this(null, title, description, host, startDate, endDate, photo, place, newParticipant, transportation, budget);
 	}
 	

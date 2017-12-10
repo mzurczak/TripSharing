@@ -51,18 +51,20 @@ const tripsReducer = (state = tripsInitialState, action) => {
 }
 
 const coordinatesInitialState = {
-  coordinates: {
-    lat: 0,
-    lng: 0
-  }
+  coordinates: [{
+    lat: 47.390960,
+    lng: 8.516318
+  }]
 }
 
 const coordinatesReducer = (state = coordinatesInitialState, action) => {
   
   switch ( action.type ) {
     case 'addCoordinates' :{
+      let newState = { ...state };
+      newState.coordinates.push(action.coordinates);
       return {
-        coordinates: action.coordinates
+        coordinates: newState.coordinates
       }
     }
     default :{

@@ -1,7 +1,6 @@
 package ch.tripsharing.web;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -78,23 +77,23 @@ public class RestTripController {
 	
 	@PostMapping( "/create")
 	@JsonView( JsonViews.TripDetails.class )
-	public Trip createTrip( @RequestBody Map<String, String> json, HttpServletRequest request) {
-		String title = json.get("title");
-		String description = json.get("description");
+	public Trip createTrip( @RequestBody Trip json, HttpServletRequest request) {
+		String title = json.getName();
+		String description = json.getDescription();
 		String token = request.getHeader(tokenHeader).substring(7);
 		User host = this.userService.findByUserName(jwtUtil.getUsernameFromToken(token));
-		String startDate = json.get("startDate");
-		String endDate = json.get("endDate");
-		String places = json.get("places");
-		String transportation = json.get("transportation");
-		String photo = json.get("photo");
-		String budget = json.get("budget");
+		String startDate = json.getStartDate();
+		String endDate = json.getEndDate();
+		String photo = json.getPhoto();
+		List<String> newPlace = json.getPlaces();
+		String transportation = json.getTransportation();
+		String budget = json.getBudget();
 		
 		if ( title == null || description == null || host == null ) {
 			return null;
 		}
 		
-		Trip newTrip = new Trip( title, description, host, startDate, endDate, photo, places, null, transportation, budget);
+		Trip newTrip = new Trip( title, description, host, startDate, endDate, photo, newPlace, null, transportation, budget);
 		if (isAuthenticated(request, host.getId())) {
 			return this.tripService.saveTrip(newTrip);
 		}
@@ -103,27 +102,29 @@ public class RestTripController {
 	
 	@PutMapping( "/{tripId}")
 	@JsonView( JsonViews.TripDetails.class )
-	public Trip editTrip( @RequestBody Map<String, String> json, @PathVariable String tripId, HttpServletRequest request) {
-		String title = json.get("title");
-		String description = json.get("description");
+	public Trip editTrip( @RequestBody Trip json, @PathVariable String tripId, HttpServletRequest request) {
+		String title = json.getName();
+		String description = json.getDescription();
 		User host = this.tripService.findById(tripId).getHost();
-		String startDate = json.get("startDate");
-		String endDate = json.get("endDate");
-		String photo = json.get("photo");
-		String newPlace = json.get("places");
-		String newParticipantId= json.get("participants");
+		String startDate = json.getStartDate();
+		String endDate = json.getEndDate();
+		String photo = json.getPhoto();
+//		
+		List<String> newPlace = json.getPlaces();
+		List<User> newParticipant = json.getParticipants();
 		User user = null;
-		if (newParticipantId != null) {
+		if (newParticipant != null) {
+			String newParticipantId= newParticipant.get(0).getId();
 			user = userService.findById(newParticipantId);
 		}
-		String transportation = json.get("transportation");
-		String budget = json.get("budget");
+		String transportation = json.getTransportation();
+		String budget = json.getBudget();
 		Trip newTrip = new Trip(tripId, title, description, host, startDate, endDate, photo, newPlace, user, transportation, budget);
 		
 		if (isAuthenticated(request, host.getId())) {
 			return this.tripService.updateTrip(newTrip);
 		}
-		return this.tripService.updateTrip(newTrip);
+		return null;
 	}
 	
 	@DeleteMapping( "/{id}" )

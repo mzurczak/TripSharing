@@ -68,6 +68,8 @@ public class DefaultTripService implements TripService {
 				.forEach(place -> {
 					if (!places.contains(place)) {
 						places.add(place);
+					} else {
+						places.remove(place);
 					}
 				});
 			tripToUpdate.setPlaces(places);

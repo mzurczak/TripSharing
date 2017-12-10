@@ -4,9 +4,12 @@ import { withRouter } from 'react-router-dom';
 
 import './index.css';
 
+import AddTrip from 'material-ui/svg-icons/maps/add-location';
+import Create from 'material-ui/svg-icons/content/create';
 import Divider from 'material-ui/Divider';
-import FontIcon from 'material-ui/FontIcon';
+import EditTrip from 'material-ui/svg-icons/maps/edit-location';
 import {List, ListItem} from 'material-ui/List';
+import LogOut from 'material-ui/svg-icons/action/power-settings-new';
 
 import './index.css';
 import { logOut } from '../../store/actions_creators';
@@ -14,9 +17,9 @@ import { logOut } from '../../store/actions_creators';
 class UserActionButtons_logged extends Component {
 
   handleLogOut = () => {
-    this.props.dispatch(logOut())
-    this.props.history.push("/");
     localStorage.clear();
+    // this.props.dispatch(logOut())
+    this.props.history.push("/");
   }
 
   handleManageTrips = () => {
@@ -35,23 +38,23 @@ class UserActionButtons_logged extends Component {
           <ListItem 
             primaryText="Edit profile" 
             leftIcon=
-              {<FontIcon className="material-icons">mode_edit</FontIcon>} />
+              { <Create /> } />
           <Divider />
           <ListItem 
             primaryText="Create new trip" 
             leftIcon=
-              {<FontIcon className="material-icons">add_location</FontIcon>} 
-              onClick = { this.handleCreateTrip }/>
+              {<AddTrip />} 
+            onClick = { this.handleCreateTrip }/>
           <ListItem 
             primaryText="Manage your trips" 
             leftIcon=
-              {<FontIcon className="material-icons">edit_location</FontIcon>} 
+              {<EditTrip />} 
             onClick = { this.handleManageTrips }/>
           <Divider />
           <ListItem 
             primaryText="Log out" 
             leftIcon=
-              {<FontIcon className="material-icons">power_settings_new</FontIcon>}
+              {<LogOut />}
             onClick = { this.handleLogOut }  />
         </List>
       </div>

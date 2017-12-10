@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
+import Create from 'material-ui/svg-icons/content/create'
 
 class EditButton extends Component {
   
@@ -18,7 +18,7 @@ class EditButton extends Component {
         labelPosition="after"
         primary={true}
         icon={
-        <FontIcon className="material-icons" style = {{cursor: "pointer"}}>create</FontIcon>
+        <Create />
         }
         onClick = { this.handleEditTrip }
     />)

@@ -6,25 +6,27 @@ class TripCoverPhoto extends Component {
 
   
   render(){
-    const renderPhoto = () => {
-      if (this.props.photoUrl === null) {
-        return logo
-      } else {
-        return this.props.photoUrl 
+    if (this.props.coverPhotoData !== undefined){
+      const { coverPhotoData } = this.props;
+      const renderPhoto = () => {
+        if (coverPhotoData.photo === null) {
+          return logo
+        } else {
+          return coverPhotoData.photo
+        }
       }
-    }
-    
-    if (this.props !== undefined){
+
       return (
         <div 
           className = "TripCoverPhoto"
           style = { { background: `url(${renderPhoto()}) no-repeat center center`,
             height: "300px", backgroundSize: "cover" }} >
-          <h1> { this.props.name } </h1>
-          <h3> { `Hosted by ${ this.props.host} `} </h3>
+          <h1> { coverPhotoData.name } </h1>
+          <h3> { `Hosted by ${ coverPhotoData.host.username} `} </h3>
         </div>
       )
     }
   }
 }
+
 export default TripCoverPhoto
