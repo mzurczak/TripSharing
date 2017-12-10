@@ -6,17 +6,17 @@
 * H2 
 
 ## Features
-* A usercan create a new account.
+* A user can create a new account.
 * A user can change its preferences: 
   * First name, last name, email and password.
+  * Delete his/her account.
 * A user can log in.
 * A user can log out.
-* A user can delete his/her account.
-* A anonymous or a registered user can access list of trips where will be able to read basic information about trip.
-* An anonymous or a registered user can access to /about page 
-* An anonymous or a registered user can access to /contact page
-* An anonymous or a registered user can search for a trip by name and places, and a list will be shown with all the matches.
-* A registered user can create a review about other user.
+* An anonymous or a registered user can access list of trips where will be able to read basic information about trip.
+* An anonymous or a registered user can access to /about page (not implemented yet).
+* An anonymous or a registered user can access to /contact page (not implemented yet).
+* An anonymous or a registered user can search for a trip by name and places, and a list will be shown with all the matches (search by places not implemented yet).
+* A registered user can create a review about other user (not implemented yet).
 
 ## Domain
 ### User

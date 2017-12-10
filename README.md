@@ -1,73 +1,16 @@
-# TripSharing backend
+# TripSharing
 
-### Backend stack
-* Java8
-* Spring Framework
-* H2 
+TripSharing is my final project of the Propulsion Academy bootcamp. The idea of this app is to enable users to create, manage and share the trips that they already made or are willing to do.
 
 ## Features
-* A usercan create a new account.
-* A user can change its preferences: 
-  * First name, last name, email and password.
-* A user can log in.
-* A user can log out.
-* A user can delete his/her account.
-* A anonymous or a registered user can access list of trips where will be able to read basic information about trip.
-* An anonymous or a registered user can access to /about page 
-* An anonymous or a registered user can access to /contact page
-* An anonymous or a registered user can search for a trip by name and places, and a list will be shown with all the matches.
-* A registered user can create a review about other user.
+User, before creating the own account, is able to watch and search the trips of the other users. After registration, it is possible to join other events and create own ones.  
 
-## Domain
-### User
-* `id : String`
-* `firstName: String`
-* `lastName: String`
-* `email: String`
-* `password: String`
-* `tripsHosted: Array<Trip>`
-* `tripsAttended: Array<Trip>`
-* `about: String`
+## Stack
+### Backend
+* Java 8
+* Spring framework
 
-### Trip
-* `id : String`
-* `title: String`
-* `description: String`
-* `startDate`
-* `endDate`
-* `places: Array`
-* `participants: Array<User>`
-* `photo: String (url)`
-
-### Review
-* `id : String`
-* `text: String`
-* `rating: Integer`
-* `dateCreated: LocalDate `
-* `user: User`
-* `author: User`
-
-## API endpoints
-
-Public paths:
-* `POST: /api/users/sign_in`
-* `POST: /api/users/sign_up`
-* `GET: /api/trips/searchName?=params` to search by title
-* `GET: /api/trips/searchPlace?=params` to search by places
-* `GET: /api/trips/` to retrieve all trips from database
-* `GET: /api/trips/:id` to retrieve specific trip from database
-
-Paths with auth:
-* `GET: /api/users/:id` to retrieve specific user
-* `PUT: /api/users/:id.` to edit user profile
-* `DELETE: /api/users/:id` to delete user profile 
-* `POST: /api/users/:id/review/new` to add review of user
-* `PUT: /api/users/:id/review/:id` to edit review
-* `DELETE: /api/users/:id/review/:id` to delete review
-* `GET: /api/users/me` to retrive info about currently logged user
-* `POST: /api/trips/create`
-* `PUT: /api/trips/:id` to edit trip
-* `DELETE: /api/trips/:id`
-
-## Next steps
-Write test.
+### Frontend
+* JavaScript
+* React
+* Redux
