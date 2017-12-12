@@ -5,7 +5,7 @@ import './index.css'
 
 import Header from '../../components/Header';
 import SearchList from '../../components/SearchList';
-import { fetchAllTrips } from '../../utils/fetch_functions';
+import { fetchAllTrips } from '../../utils/tripFetch_functions';
 
 
 class UserTripsPage extends Component {

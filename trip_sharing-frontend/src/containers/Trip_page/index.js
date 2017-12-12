@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import './index.css';
 import Header from '../../components/Header';
-import CoverPhoto from '../../components/Trip_CoverPhoto';
+import CoverPhoto from '../../components/CoverPhoto';
 import TripInfo from '../../containers/TripInfo'
 
-import { fetchSpecificTrip } from '../../utils/fetch_functions'
+import { fetchSpecificTrip } from '../../utils/tripFetch_functions'
 
 class TripPage extends Component {
 
@@ -22,6 +22,7 @@ class TripPage extends Component {
           <Header />
           <CoverPhoto 
             coverPhotoData = { trip }
+            typeOfPhoto = { 'tripCoverPhoto' }
           />
           <div className = "TripPage-body">
             <TripInfo trip = { trip }/>

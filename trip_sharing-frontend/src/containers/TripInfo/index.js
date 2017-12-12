@@ -6,7 +6,7 @@ import Moment from 'moment';
 import './index.css'
 
 import EditButton from '../../components/EditButton'
-import JoinButton from '../../components/JoinButton'
+import JoinButton from '../JoinButton'
 import MapContainer from '../MapContainer'
 
 class TripInfo extends Component {
@@ -29,7 +29,7 @@ class TripInfo extends Component {
     const { trip } = this.props;
     
     if ( this.props.trip !== undefined ) {
-      console.log(trip.participants) 
+      console.log(this.props.user) 
       return(
         <div className = "TripInfo-container">
           { this.renderButtons()}
@@ -88,8 +88,12 @@ class TripInfo extends Component {
                 
                 (trip.participants.length > 0 )
                 ? trip.participants.map( (user, index) => 
-                 { if (user!==null) return (<li key = { index }> { user.username } </li>)}
-                )
+                 { if (user!==null) {
+                   return (<li key = { index }> { user.username } </li>) 
+                  } else {
+                    return ""
+                  }
+                })
                 : "Be the first one and apply!"
               }
             </ul> 

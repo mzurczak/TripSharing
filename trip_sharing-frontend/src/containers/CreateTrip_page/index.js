@@ -13,7 +13,7 @@ import TextField from 'material-ui/TextField';
 import './index.css'
 
 import Header from '../../components/Header';
-import { fetchCreateTrip } from '../../utils/fetch_functions';
+import { fetchCreateTrip } from '../../utils/tripFetch_functions';
 
 class CreateTrip extends Component {
   

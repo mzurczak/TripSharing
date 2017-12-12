@@ -1,0 +1,10 @@
+ .ReviewItem-header{
+   display: flex;
+   justify-content: space-between;
+   align-items: center; 
+ }
+
+.Rate {
+  width: 35%;
+  float: right;
+}

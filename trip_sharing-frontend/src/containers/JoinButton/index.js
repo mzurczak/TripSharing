@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 import Remove from 'material-ui/svg-icons/content/remove-circle-outline'
 import Add from 'material-ui/svg-icons/content/add-circle-outline'
-import { fetchEditTrip } from '../../utils/fetch_functions';
+import { fetchEditTrip } from '../../utils/tripFetch_functions';
 
 class JoinButton extends Component {
   

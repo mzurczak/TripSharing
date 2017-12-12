@@ -8,6 +8,7 @@ import DatePicker from 'material-ui/DatePicker';
 import Delete from 'material-ui/svg-icons/action/delete';
 import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
+import Paper from 'material-ui/Paper';
 import RemovePlace from 'material-ui/svg-icons/navigation/cancel'
 import Save from 'material-ui/svg-icons/content/save';
 import TextField from 'material-ui/TextField';
@@ -15,7 +16,7 @@ import TextField from 'material-ui/TextField';
 import './index.css'
 
 import Header from '../../components/Header';
-import { fetchSpecificTrip, fetchEditTrip, fetchDeleteTrip } from '../../utils/fetch_functions';
+import { fetchSpecificTrip, fetchEditTrip, fetchDeleteTrip } from '../../utils/tripFetch_functions';
 
 class EditTrip extends Component {
   
@@ -25,9 +26,9 @@ class EditTrip extends Component {
     const currentDate = new Date();
     currentDate.setFullYear(currentDate.getFullYear());
     currentDate.setHours(0, 0, 0, 0);
-    const minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear());
-    minDate.setHours(0, 0, 0, 0);
+    // const minDate = new Date();
+    // minDate.setFullYear(minDate.getFullYear());
+    // minDate.setHours(0, 0, 0, 0);
     
     this.state = {
       title: null,
@@ -42,7 +43,7 @@ class EditTrip extends Component {
       budget: null,
       currentPlaces: [],
       currentDate,
-      minDate,
+      // minDate,
     };
   }
   
@@ -122,8 +123,8 @@ class EditTrip extends Component {
 
   handlePlacesRemove = (e) => {
     console.log(e)
-    let newPlacesToChange = [...this.state.places];
-    let newCurrentPlaces = [...this.state.currentPlaces]
+    // let newPlacesToChange = [...this.state.places];
+    // let newCurrentPlaces = [...this.state.currentPlaces]
     // if(!newPlacesToChange.includes(place)){
     //   newPlacesToChange.push(place)
     // } else {
@@ -144,6 +145,9 @@ class EditTrip extends Component {
       newPlacesToChange.push(place);
       newCurrentPlaces.push(place)
     } 
+    if (newCurrentPlaces.includes(place)){
+      newCurrentPlaces.filter( currentPlace => currentPlace !== place)
+    }
     this.setState({
       newPlace: '',
       currentPlaces: newCurrentPlaces,
@@ -240,69 +244,75 @@ class EditTrip extends Component {
             <h2>Edit your trip </h2>
             {<div>
               <form>
-                <TextField
-                  hintText = "Title"
-                  floatingLabelText = { trip.name }
-                  onChange = { this.handleTitleChange }
+                <Paper className = "Edit-general" zDepth = {2} style = {{backgroundColor: 'azure'}}>
+                  <h2> General </h2>
+                  <TextField
+                    floatingLabelText = "Title"
+                    defaultValue = { trip.name }
+                    onChange = { this.handleTitleChange }
                   /><br />
-                <div>
-                <DatePicker
-                  onChange = { this.handleStartDate }
-                  floatingLabelText = "Start date"
-                  autoOk = { true }
-                  shouldDisableDate={this.disableStartDays}
-                /><br />
-                <DatePicker
-                  onChange = { this.handleEndDate }
-                  floatingLabelText = "End date"
-                  autoOk = { true }
-                  shouldDisableDate={this.disableEndDays}
-                /><br />
-                </div>
-                <TextField
-                  fullWidth = { true }
-                  multiLine= { true }
-                  rows= { 5 }
-                  floatingLabelText = "Description"
-                  onChange = { this.handleDescriptionChange }
+                  <div>
+                  <DatePicker
+                    onChange = { this.handleStartDate }
+                    floatingLabelText = "Start date"
+                    autoOk = { true }
+                    defaultDate = { this.state.minDate }
+                    shouldDisableDate={this.disableStartDays}
                   /><br />
-                <div className = "Edit-places">
-                <TextField
-                  floatingLabelText = "Places"
-                  defaultValue = { this.state.newPlace }
-                  onChange = { this.handlePlacesChange } />
-                   <AddPlace 
+                  <DatePicker
+                    onChange = { this.handleEndDate }
+                    floatingLabelText = "End date"
+                    autoOk = { true }
+                    defaultDate = { this.state.maxDate }
+                    shouldDisableDate={this.disableEndDays}
+                  /><br />
+                  </div>
+                  <TextField
+                    fullWidth = { true }
+                    multiLine= { true }
+                    rows= { 5 }
+                    defaultValue = { trip.description }
+                    floatingLabelText = "Description"
+                    onChange = { this.handleDescriptionChange }
+                  /><br />
+                </Paper>
+                <Paper className = "Edit-places" zDepth = {2} style = {{backgroundColor: 'azure'}}>
+                  <h2> Places </h2>
+                  <TextField
+                    floatingLabelText = "Places"
+                    onChange = { this.handlePlacesChange } />
+                  <AddPlace 
                     style = {{height: '35px', margin: "right", cursor: "pointer"}}
                     onClick = { this.handleAddPlace } />
                   <List>
-                  {
-                    this.state.currentPlaces.map( (place, index) => {
-                      return <ListItem primaryText={ place } rightIcon={<RemovePlace />} onClick = { this.handlePlacesRemove } key = { index }/>
-                    })
-                  }
-                  </List>
-                  <br />
-                </div>
-                <div>
-                <TextField
-                  floatingLabelText = "Transportation"
-                  onChange = { this.handleTransportationChange }
+                    {
+                      this.state.currentPlaces.map( (place, index) => {
+                        return <ListItem primaryText={ place } rightIcon={<RemovePlace />} onClick = { this.handlePlacesRemove } key = { index }/>
+                      })
+                    }
+                  </List><br />
+                </Paper>
+                <Paper className = "Edit-additional" zDepth = {2} style = {{backgroundColor: 'azure'}}>
+                  <h2> Additional </h2>
+                  <TextField
+                    floatingLabelText = "Transportation"
+                    onChange = { this.handleTransportationChange }
+                    /><br />
+                  <TextField
+                    floatingLabelText = "Photo URL"
+                    onChange = { this.handlePhotoChange }
+                    /><br />
+                  <TextField
+                    floatingLabelText = "Budget"
+                    onChange = { this.handleBudgetChange }
                   /><br />
-                <TextField
-                  floatingLabelText = "Photo URL"
-                  onChange = { this.handlePhotoChange }
-                  /><br />
-                <TextField
-                  floatingLabelText = "Budget"
-                  onChange = { this.handleBudgetChange }
-                  /><br />
-                </div>
+                </Paper>
               </form>
                 { renderButtons() }
               </div>
             }
             </div>)
-            : "Loadin form for this trip..."
+            : "Loading form for this trip..."
       }
       </div>
     )

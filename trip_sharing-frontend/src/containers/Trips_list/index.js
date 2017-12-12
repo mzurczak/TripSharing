@@ -6,7 +6,7 @@ import './index.css'
 import {GridList} from 'material-ui/GridList';
 
 import TripItem from '../../components/Trips_item'
-import { fetchAllTrips } from '../../utils/fetch_functions';
+import { fetchAllTrips } from '../../utils/tripFetch_functions';
 
 class TripList extends Component {
 

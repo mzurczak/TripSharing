@@ -3,43 +3,22 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 
-import { fetchCoordinates } from '../../utils/fetch_functions'
+import { fetchCoordinates, clearCoordinates } from '../../utils/mapFetch_functions'
 
 class MapContainer extends Component {
 
   componentDidMount() {
-    this.props.passedPlaces.forEach( place => {
-      this.props.dispatch(fetchCoordinates(place))
-    })  
+    this.props.dispatch(clearCoordinates());
+    this.props.dispatch(fetchCoordinates(this.props.passedPlaces))
   }
 
-  loadMap() {
-    if (this.props && this.props.google) {
-      // google is available
-      const {google} = this.props;
-      const maps = google.maps;
-
-      const mapRef = this.refs.map;
-      const node = ReactDOM.findDOMNode(mapRef);
-
-      let {initialCenter, zoom} = this.props;
-      const {lat, lng} = initialCenter;
-      const center = new maps.LatLng(lat, lng);
-      const mapConfig = Object.assign({}, {
-        center: center,
-        zoom: zoom
-      })
-      this.map = new maps.Map(node, mapConfig);
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.placesOfTrip !== this.props.placesOfTrip) {
+      Map.recenterMap();
+      Map.loadMap();
     }
-    // ...
+    window.scroll(0,0)
   }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevProps.google !== this.props.google) {
-  //     this.loadMap();
-  //     // this.recenterMap();
-  //   }
-  // }
   
   render() {
     if (!this.props.loaded) {
@@ -72,7 +51,12 @@ class MapContainer extends Component {
 
 const mapStateToProps = ({ coordinatesReducer }) => {
   const placesOfTrip = {...coordinatesReducer};
-  const initial = placesOfTrip.coordinates[0];
+  let initial;
+  if(placesOfTrip.coordinates[1] !== undefined) {
+    initial = placesOfTrip.coordinates[1];
+  } else {
+    initial = {lat: 47.390960, lng: 8.516318}
+  }
   const places = placesOfTrip.coordinates.slice(1);
   return({
     initial,

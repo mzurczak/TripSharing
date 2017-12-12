@@ -103,6 +103,8 @@ public class RestTripController {
 	@PutMapping( "/{tripId}")
 	@JsonView( JsonViews.TripDetails.class )
 	public Trip editTrip( @RequestBody Trip json, @PathVariable String tripId, HttpServletRequest request) {
+		String token = request.getHeader(tokenHeader).substring(7);
+		User currentUser = this.userService.findByUserName(jwtUtil.getUsernameFromToken(token));
 		String title = json.getName();
 		String description = json.getDescription();
 		User host = this.tripService.findById(tripId).getHost();
@@ -121,7 +123,7 @@ public class RestTripController {
 		String budget = json.getBudget();
 		Trip newTrip = new Trip(tripId, title, description, host, startDate, endDate, photo, newPlace, user, transportation, budget);
 		
-		if (isAuthenticated(request, host.getId())) {
+		if (isAuthenticated(request, currentUser.getId())) {
 			return this.tripService.updateTrip(newTrip);
 		}
 		return null;

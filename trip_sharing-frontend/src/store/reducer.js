@@ -12,10 +12,11 @@ const userReducer = (state=userInitialState, action) => {
         userInfo: action.user
       }
     }
-    
+
     case 'logOutUser': {
       return {
         token:null,
+        user: {}
       }
     }
 
@@ -23,6 +24,12 @@ const userReducer = (state=userInitialState, action) => {
       return {
         token: action.token,
       };
+    }
+
+    case 'addSpecificUser':{
+      const newState = { ...state }
+      newState.specificUser = action.user;
+      return newState;
     }
 
     default:
@@ -52,8 +59,6 @@ const tripsReducer = (state = tripsInitialState, action) => {
 
 const coordinatesInitialState = {
   coordinates: [{
-    lat: 47.390960,
-    lng: 8.516318
   }]
 }
 
@@ -67,6 +72,16 @@ const coordinatesReducer = (state = coordinatesInitialState, action) => {
         coordinates: newState.coordinates
       }
     }
+
+    case 'clear' : {
+      return {
+        coordinates: [{
+          lat: 47.390960,
+          lng: 8.516318
+        }]
+      }
+    }
+
     default :{
       return state;
     }

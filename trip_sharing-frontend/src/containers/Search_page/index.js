@@ -5,14 +5,14 @@ import './index.css'
 
 import Header from '../../components/Header'
 import SearchList from '../../components/SearchList'
-import { fetchSearching } from '../../utils/fetch_functions';
+import { fetchSearching } from '../../utils/tripFetch_functions';
 
 
 class SearchPage extends Component {
   
-  componentWillMount(){
-    this.props.dispatch(fetchSearching(this.props.match.params.searchTrip))
-  }
+  // componentWillMount(){
+  //   this.props.dispatch(fetchSearching(this.props.match.params.searchTrip))
+  // }
 
 
   render(){

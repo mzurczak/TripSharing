@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import { withRouter } from 'react-router-dom';
 
 import './index.css'
-import { fetchNewUser } from '../../utils/fetch_functions';
+import { fetchNewUser, fetchSignIn } from '../../utils/userFetch_functions';
 
 const styles = {
   activeButton: {
@@ -24,7 +24,7 @@ class SignUpForm extends Component {
     super();
 
     this.state = {
-      userName: '',
+      username: '',
       firstName: '',
       lastName: '',
       email: '',
@@ -35,7 +35,7 @@ class SignUpForm extends Component {
 
   handleUserNameChange = (e) => {
     this.setState({
-      userName: e.currentTarget.value,
+      username: e.currentTarget.value,
     })
   }
 
@@ -73,16 +73,13 @@ class SignUpForm extends Component {
   handleSignUp = (e) => {
     e.preventDefault();
     const newUser = {
-      username: this.state.userName,
+      username: this.state.username,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       email: this.state.email,
       password: this.state.password
     }
-    this.props.dispatch(fetchNewUser(newUser))
-      .then(() => {
-        this.props.history.push("/")
-      });
+    this.props.dispatch(fetchNewUser(newUser));
   }
   
   render() {

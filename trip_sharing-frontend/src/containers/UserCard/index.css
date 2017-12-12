@@ -1,0 +1,32 @@
+.UserCard-body {
+  margin: 50px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.UserCard-userInfo {
+  margin-right: 15px;
+  width: 30%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.UserCard-tripsList {
+  width: 70%;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.UserCard-userInfo h2 {
+  width: 100%;
+}
+
+.UserCard-userInfo h3 {
+  width: 100%;
+}

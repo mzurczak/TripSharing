@@ -9,6 +9,12 @@ export const addUser = (data) => ({
   user: data
 })
 
+export const addSpecificUser = (data) => ({
+  type: 'addSpecificUser',
+  token: localStorage.getItem('token'),
+  user: data
+})
+
 export const logOut = () => ({
   type: 'logOutUser',
 })
@@ -21,4 +27,9 @@ export const addTrips = (data) => ({
 export const addCoordinates = (data) => ({
   type: 'addCoordinates',
   coordinates: data
+})
+
+export const clearCurrentCoordinates = () => ({
+  type: 'clear',
+  coordinates: {}
 })

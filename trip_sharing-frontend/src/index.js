@@ -10,13 +10,15 @@ import Store from './store';
 
 import './index.css';
 
-import CreateTripPage from './containers/CreateTrip_page'
-import EditTripPage from './containers/EditTrip_page'
+import CreateReviewPage from './containers/CreateReview_page';
+import CreateTripPage from './containers/CreateTrip_page';
+import EditTripPage from './containers/EditTrip_page';
 import Home from './components/Home_page';
 import SearchPage from './containers/Search_page';
 import TripPage from './containers/Trip_page';
+import UserPage from './containers/User_page'
 import UserTripsPage from './containers/UserTrips_page'
-import { fetchUser } from './utils/fetch_functions';
+import { fetchUser } from './utils/userFetch_functions';
 
 Store.dispatch(fetchUser());
 
@@ -31,6 +33,8 @@ ReactDOM.render(
           <Route exact path = {'/trip/create'} component = { CreateTripPage } />
           <Route exact path = {'/trips/edit/:tripId'} component = { EditTripPage } />
           <Route exact path = {'/mytrips'} component = { UserTripsPage } />
+          <Route exact path = {'/user/:userId'} component = { UserPage } />
+          <Route exact path = {'/user/:userId/newReview'} component = { CreateReviewPage } />
         </Switch>
       </Router>
     </MuiThemeProvider>

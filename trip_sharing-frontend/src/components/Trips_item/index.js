@@ -27,10 +27,10 @@ class TripItem extends Component {
     return(
       <GridTile
         title = { trip.name }
-        subtitle = { <span>Host <b> { 
+        subtitle = { <span> { 
           (trip.host !== undefined ) 
-          ? trip.host.username 
-          : "Loading..."} </b></span>}
+          ? `Host: ${trip.host.username}` 
+          : ""} </span>}
         // actionIcon = { <IconButton><StarBorder color="white" /></IconButton> }
         onClick = { this.handleGoToTrip }
       >

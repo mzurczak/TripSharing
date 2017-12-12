@@ -35,7 +35,7 @@ public class Review implements Serializable{
 	@JsonView( JsonViews.Summary.class )
 	private String id;
 	
-	@JsonView( JsonViews.ReviewDetails.class )
+	@JsonView( JsonViews.TripListInUser.class )
 	@ManyToOne
 	private User author;
 	

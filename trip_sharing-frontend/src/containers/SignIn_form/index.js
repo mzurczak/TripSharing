@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import { withRouter } from 'react-router-dom';
 
-import { fetchSignIn, fetchUser } from '../../utils/fetch_functions';
+import { fetchSignIn, fetchUser } from '../../utils/userFetch_functions';
 
 const styles = {
   activeButton: {

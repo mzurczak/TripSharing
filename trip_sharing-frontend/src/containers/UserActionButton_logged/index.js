@@ -12,13 +12,11 @@ import {List, ListItem} from 'material-ui/List';
 import LogOut from 'material-ui/svg-icons/action/power-settings-new';
 
 import './index.css';
-import { logOut } from '../../store/actions_creators';
 
 class UserActionButtons_logged extends Component {
 
   handleLogOut = () => {
     localStorage.clear();
-    // this.props.dispatch(logOut())
     this.props.history.push("/");
   }
 

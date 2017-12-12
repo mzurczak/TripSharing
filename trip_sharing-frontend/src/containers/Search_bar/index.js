@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import { withRouter } from 'react-router-dom';
 
-import { fetchSearching, fetchAllTrips } from '../../utils/fetch_functions';
+import { fetchSearching, fetchAllTrips } from '../../utils/tripFetch_functions';
 
 import './index.css'
 
@@ -57,20 +57,20 @@ class SearchBar extends Component {
   render(){
     return(
       <span className = "SearchBar">
-        <form >
+        <form onSubmit = { this.handleSearch }>
           <AutoComplete 
             hintText = "Search your next adventure..."
             style = { styles.searchBox } 
             underlineShow = {false}
             onUpdateInput = { this.handleChangeSearchItem }
-            onNewRequest = { this.handleSearch }
+            // onNewRequest = { this.handleSearch }
             inputStyle = {
               { fontSize: '25px', 
                 fontWeight: '200',
               }
             }
             dataSource = { this.props.tripNames }
-            />
+          />
           <FlatButton 
             icon = {<FontIcon className="material-icons">search</FontIcon>}
             style = { styles.searchButton } 
