@@ -6,6 +6,7 @@ import Moment from 'moment'
 import AddPlace from 'material-ui/svg-icons/maps/add-location';
 import DatePicker from 'material-ui/DatePicker';
 import {List, ListItem} from 'material-ui/List';
+import Paper from 'material-ui/Paper';
 import RemovePlace from 'material-ui/svg-icons/navigation/cancel'
 import Save from 'material-ui/svg-icons/content/save';
 import TextField from 'material-ui/TextField';
@@ -175,32 +176,36 @@ class CreateTrip extends Component {
           {
             <div>
               <form>
-                <TextField
-                  floatingLabelText = "Name"
-                  onChange = { this.handleNameChange }
-                /><br />
-                <div>
-                  <DatePicker
-                    onChange = { this.handleStartDate }
-                    floatingLabelText = "Start date"
-                    autoOk = { true }
-                    shouldDisableDate={this.disableStartDays}
+                <Paper className = "Edit-general" zDepth = {2} style = {{backgroundColor: 'azure'}}>
+                  <h2> General </h2>
+                  <TextField
+                    floatingLabelText = "Name"
+                    onChange = { this.handleNameChange }
                   /><br />
-                  <DatePicker
-                    onChange = { this.handleEndDate }
-                    floatingLabelText = "End date"
-                    autoOk = { true }
-                    shouldDisableDate={this.disableEndDays}
+                  <div>
+                    <DatePicker
+                      onChange = { this.handleStartDate }
+                      floatingLabelText = "Start date"
+                      autoOk = { true }
+                      shouldDisableDate={this.disableStartDays}
+                    /><br />
+                    <DatePicker
+                      onChange = { this.handleEndDate }
+                      floatingLabelText = "End date"
+                      autoOk = { true }
+                      shouldDisableDate={this.disableEndDays}
+                    /><br />
+                  </div>
+                  <TextField
+                    fullWidth = { true }
+                    multiLine= { true }
+                    rows= { 5 }
+                    floatingLabelText = "Description"
+                    onChange = { this.handleDescriptionChange }
                   /><br />
-                </div>
-                <TextField
-                  fullWidth = { true }
-                  multiLine= { true }
-                  rows= { 5 }
-                  floatingLabelText = "Description"
-                  onChange = { this.handleDescriptionChange }
-                /><br />
-                <div className = "Create-places">
+                </Paper>
+                <Paper className = "Edit-places" zDepth = {2} style = {{backgroundColor: 'azure'}}>
+                  <h2> Places </h2>
                   <TextField
                       floatingLabelText = "Places"
                       defaultValue = { this.state.newPlace }
@@ -216,21 +221,22 @@ class CreateTrip extends Component {
                   }
                   </List>
                   <br />
-                </div>
-                <div>
-                <TextField
-                  floatingLabelText = "Transportation"
-                  onChange = { this.handleTransportationChange }
-                /><br />
-                <TextField
-                  floatingLabelText = "Photo URL"
-                  onChange = { this.handlePhotoChange }
-                /><br />
-                <TextField
-                  floatingLabelText = "Budget"
-                  onChange = { this.handleBudgetChange }
-                /><br />
-                </div>
+                </Paper>
+                <Paper className = "Edit-additional" zDepth = {2} style = {{backgroundColor: 'azure'}}>
+                  <h2> Additional </h2>
+                  <TextField
+                    floatingLabelText = "Transportation"
+                    onChange = { this.handleTransportationChange }
+                  /><br />
+                  <TextField
+                    floatingLabelText = "Photo URL"
+                    onChange = { this.handlePhotoChange }
+                  /><br />
+                  <TextField
+                    floatingLabelText = "Budget"
+                    onChange = { this.handleBudgetChange }
+                  /><br />
+                </Paper>
               </form>
               { renderButtons() }
             </div>

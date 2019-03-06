@@ -64,10 +64,10 @@ class UserCard extends Component {
         <div className = "UserCard-userInfo">
           <h2>{ `${ this.props.userInfo.username} at glance:`}</h2> 
           <Divider />
-          {(userInfo.aboutMe !== undefined)
+          {(userInfo.aboutMe === undefined)
           ? (<div>
             <h3> About myself: </h3>
-            <p> {`${ userInfo.aboutMe  }`} </p>
+            <p> {`Living in Switzerland, currently planning to visit the east coast of the USA!`} </p>
           </div>)
           :''}
           <h3> {`Trips hosted : ${ userInfo.tripsHosted.length}`} </h3><br />  

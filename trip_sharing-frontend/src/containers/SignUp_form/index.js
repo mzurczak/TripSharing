@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import { withRouter } from 'react-router-dom';
 
 import './index.css'
-import { fetchNewUser, fetchSignIn } from '../../utils/userFetch_functions';
+import { fetchNewUser } from '../../utils/userFetch_functions';
 
 const styles = {
   activeButton: {

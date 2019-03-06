@@ -5,7 +5,7 @@ import './index.css'
 
 import Header from '../../components/Header'
 import SearchList from '../../components/SearchList'
-import { fetchSearching } from '../../utils/tripFetch_functions';
+// import { fetchSearching } from '../../utils/tripFetch_functions';
 
 
 class SearchPage extends Component {

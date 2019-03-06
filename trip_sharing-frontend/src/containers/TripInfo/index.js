@@ -29,7 +29,6 @@ class TripInfo extends Component {
     const { trip } = this.props;
     
     if ( this.props.trip !== undefined ) {
-      console.log(this.props.user) 
       return(
         <div className = "TripInfo-container">
           { this.renderButtons()}
